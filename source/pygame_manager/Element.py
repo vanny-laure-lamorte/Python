@@ -6,6 +6,8 @@ class Element(Screen):
 
         # Color used 
 
+        self.red1 = (161,15,15) # Home
+
         # Color not used
 
         self.black = (0, 0, 0) 
@@ -61,7 +63,7 @@ class Element(Screen):
 
         # Font   
         self.font1 = "assets/font/MickeyMouseLine_PERSONAL_USE_ONLY.otf"
-        self.font2 = "assets/font/gg sans Regular.ttf"
+        self.font2 = "assets/font/Sunny Spells Basic.ttf"
         self.font3 = "assets/font/Uni Sans Thin.otf"
         self.font4 = "assets/font/gg sans Semibold.ttf"
         self.font5 = "assets/font/gg sans Bold.ttf"
