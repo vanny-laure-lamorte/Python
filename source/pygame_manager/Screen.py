@@ -6,7 +6,7 @@ class Screen:
         self.W = 900
         self.H = 700
         self.Window = pygame.display.set_mode((self.W, self.H))
-        pygame.display.set_caption("M")
+        pygame.display.set_caption("Mines Weeper")
         self.clock = pygame.time.Clock()
 
     def update(self):
@@ -18,7 +18,3 @@ class Screen:
     def screen_color(self, color): 
         self.Window.fill(color)
 
-test = Screen()
-
-while True: 
-    test.update()

@@ -1,7 +1,8 @@
 import pygame
-
-class Element():
+from source.pygame_manager.Screen import Screen
+class Element(Screen):
     def __init__(self):
+        Screen.__init__(self)
 
         # Color used 
 
@@ -59,7 +60,7 @@ class Element():
         self.brown = (75, 67, 67)
 
         # Font   
-        self.font1 = "assets/font/Uni Sans Heavy.otf"
+        self.font1 = "assets/font/MickeyMouseLine_PERSONAL_USE_ONLY.otf"
         self.font2 = "assets/font/gg sans Regular.ttf"
         self.font3 = "assets/font/Uni Sans Thin.otf"
         self.font4 = "assets/font/gg sans Semibold.ttf"
