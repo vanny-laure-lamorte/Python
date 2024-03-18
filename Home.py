@@ -13,7 +13,7 @@ class Home (Element, Screen):
         self.img_background("home1", 450, 350, 900, 700, "home1")
 
         # Image
-        self.image_not_center("home2", 250, 15, 400, 400, "home2")       
+        self.image_not_center("home2", 250, 20, 400, 400, "home2")       
 
         # Title
         self.text_not_align(self.font1, 50,"Mines Weeper ", self.white, 320, 280)
@@ -24,8 +24,10 @@ class Home (Element, Screen):
         self.button_hover("Level 1", 440, 460, 240, 50, self.red1, self.white, self.yellow, self.white, "Level 1", self.font2, self.white, 35, 2, 5)
         self.button_hover("Level 2", 440, 520, 240, 50, self.red1, self.white, self.yellow, self.white, "Level 2", self.font2, self.white, 35, 2, 5)
 
-        # Copyright       
-        self.text_not_align(self.font1, 50," ", self.white, 320, 280)
+        # Copyright  
+        self.text_not_align(self.font3, 15,"©", self.white, 345, 678)
+     
+        self.text_not_align(self.font3, 10,"Copyright 2024 | All Rights Reserved ", self.white, 360, 680)
 
     def run_home(self):
         home_running = True

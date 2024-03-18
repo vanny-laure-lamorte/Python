@@ -63,9 +63,9 @@ class Element(Screen):
         # Font   
         self.font1 = "assets/font/MickeyMouseLine_PERSONAL_USE_ONLY.otf" # Mines weeper - home
         self.font2 = "assets/font/Sunny Spells Basic.ttf" # Mines weeper - home
+        self.font3 = "assets/font/Roboto-Medium.ttf" # Mines weeper - copyright
 
 
-        self.font3 = "assets/font/Uni Sans Thin.otf"
         self.font4 = "assets/font/gg sans Semibold.ttf"
         self.font5 = "assets/font/gg sans Bold.ttf"
 
