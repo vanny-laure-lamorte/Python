@@ -4,14 +4,13 @@ class Element(Screen):
     def __init__(self):
         Screen.__init__(self)
 
-        # Color used 
-
-        self.red1 = (161,15,15) # Home
+        self.red1 = (161,15,15) # Mines weeper - menu option
+        self.white = (255, 255, 255) # Mines weeper - name game
+        self.yellow = (233, 164, 41)  # Mines weeper - menu option
 
         # Color not used
-
         self.black = (0, 0, 0) 
-        self.white = (255, 255, 255)
+    
         self.darkgrey = (100,100,100)
         self.grey = (250, 250, 250)
         self.grey1 = (240, 242, 245)   
@@ -40,7 +39,7 @@ class Element(Screen):
         self.alpha_none =(0,0,0,0)
         self.pink = (222, 50, 79)
         self.pink1 = (254, 0, 135)      
-        self.yellow = (233, 164, 41) 
+
         self.green = (66, 183, 42)
         self.green2 = (39, 78, 19)
         self.darkgreen = (97, 155, 138)
@@ -62,8 +61,10 @@ class Element(Screen):
         self.brown = (75, 67, 67)
 
         # Font   
-        self.font1 = "assets/font/MickeyMouseLine_PERSONAL_USE_ONLY.otf"
-        self.font2 = "assets/font/Sunny Spells Basic.ttf"
+        self.font1 = "assets/font/MickeyMouseLine_PERSONAL_USE_ONLY.otf" # Mines weeper - home
+        self.font2 = "assets/font/Sunny Spells Basic.ttf" # Mines weeper - home
+
+
         self.font3 = "assets/font/Uni Sans Thin.otf"
         self.font4 = "assets/font/gg sans Semibold.ttf"
         self.font5 = "assets/font/gg sans Bold.ttf"
@@ -76,10 +77,12 @@ class Element(Screen):
         text_rect = text.get_rect(center=(x, y))
         self.Window.blit(text, text_rect)
     
-    def text_not_align(self, font, text_size, text_content, color, x, y):
+    # Mines weeper - home
+    def text_not_align(self, font, text_size, text_content, color, x, y): 
         text = pygame.font.Font(f"{font}", text_size).render(text_content, True, color)
         text_rect = text.get_rect(topleft=(x, y))
         self.Window.blit(text, text_rect)
+    
 
     def text_center_italic(self, font, text_size, text_content, color, x, y):
         pygame.font.init()
@@ -96,12 +99,14 @@ class Element(Screen):
         self.Window.blit(name, (x - name.get_width()//2, y - name.get_height()//2))
         return name
 
+    # Mines weeper - Tom and Jerry Logo
     def image_not_center(self, name, x, y, width, height, image_name):
         name = pygame.image.load(f'assets/image/{image_name}.png').convert_alpha()
         name = pygame.transform.scale(name,(width,height))
         self.Window.blit(name, (x,y))
         return name
         
+    # Mines weeper - home background
     def img_background(self, name, x, y, width, height, image_name):
         name = pygame.image.load(f'assets/image/{image_name}.png').convert_alpha()
         name = pygame.transform.scale(name, (width, height))
@@ -160,6 +165,7 @@ class Element(Screen):
         mouse_pos = pygame.mouse.get_pos()
         return button_rect.collidepoint(mouse_pos)
     
+    # Mines weeper - home menu options
     def button_hover(self, name, x, y, width, height, color_full, color_border, color_hover, color_border_hover, text, font, text_color,text_size, thickness, radius): 
 
         name = pygame.Rect((x - width//2), (y - height//2), width, height)
