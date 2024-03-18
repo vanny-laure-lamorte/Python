@@ -166,11 +166,11 @@ class Element(Screen):
         return button_rect.collidepoint(mouse_pos)
     
     # Mines weeper - home menu options
-    def button_hover(self, name, x, y, width, height, color_full, color_border, color_hover, color_border_hover, text, font, text_color,text_size, thickness, radius): 
+    def button_hover(self, x, y, width, height, color_full, color_border, color_hover, color_border_hover, text, font, text_color,text_size, thickness, radius): 
 
-        name = pygame.Rect((x - width//2), (y - height//2), width, height)
+        button = pygame.Rect((x - width//2), (y - height//2), width, height)
 
-        if self.is_mouse_over_button(name):
+        if self.is_mouse_over_button(button):
             self.rect_full(color_hover, x, y, width + 5, height + 5, radius)
             self.rect_border(color_border_hover, x, y, width + 5, height + 5, thickness, radius)
         else:
@@ -178,7 +178,7 @@ class Element(Screen):
             self.rect_border(color_border, x, y, width, height, thickness, radius)
         self.text_center(font, text_size, text, text_color,  x, y)
 
-        return name    
+        return button    
 # Def Cursor 
     def normal_cursor(self):
         pygame.mouse.set_cursor(pygame.cursors.arrow)

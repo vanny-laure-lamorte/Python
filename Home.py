@@ -6,6 +6,7 @@ class Home (Element, Screen):
     def __init__(self):
         Element.__init__(self)
         Screen.__init__(self)
+        self.input_name = "ENTER YOUR NAME"
    
     def design(self):
 
@@ -20,9 +21,9 @@ class Home (Element, Screen):
         self.text_not_align(self.font1, 30,"— TOM & JERRY Version", self.white, 320, 320)
 
         # Options menu
-        self.button_hover("Name", 440, 400, 240, 50, self.red1, self.white, self.yellow, self.white, "Name", self.font2, self.white, 35, 2, 5)
-        self.button_hover("Level 1", 440, 460, 240, 50, self.red1, self.white, self.yellow, self.white, "Level 1", self.font2, self.white, 35, 2, 5)
-        self.button_hover("Level 2", 440, 520, 240, 50, self.red1, self.white, self.yellow, self.white, "Level 2", self.font2, self.white, 35, 2, 5)
+        self.input_name_rect = self.button_hover(440, 400, 240, 50, self.red1, self.white, self.yellow, self.white, self.input_name, self.font2, self.white, 35, 2, 5)
+        self.button_hover(440, 460, 240, 50, self.red1, self.white, self.yellow, self.white, "Level 1", self.font2, self.white, 35, 2, 5)
+        self.button_hover(440, 520, 240, 50, self.red1, self.white, self.yellow, self.white, "Level 2", self.font2, self.white, 35, 2, 5)
 
         # Copyright  
         self.text_not_align(self.font3, 15,"©", self.white, 345, 678)
@@ -35,10 +36,25 @@ class Home (Element, Screen):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     home_running = False
-                    
+
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    if self.input_name_rect.collidepoint(event.pos): 
+                        self.entry = True
+                        self.entry = 1
+                        self.input_name = ""
+                    else:
+                         self.entry = False
+
+                elif event.type == pygame.KEYDOWN and self.entry :
+                    if event.key == pygame.K_BACKSPACE:
+                        self.input_name = self.input_name[:-1]
+                    else:
+                        if event.unicode:
+                            self.input_name += event.unicode
+
             self.design()
             self.update()
-        
+
       
 home = Home()
 home.run_home()
