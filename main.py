@@ -7,6 +7,6 @@
 
 from source.Game import Game
 
-g = Game()
+g = Game((9,9))
 g.game_run()
 
