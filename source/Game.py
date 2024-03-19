@@ -43,6 +43,11 @@ class Game (Element, Screen):
         self.text_not_align(self.font3, 12,"X", self.black, 860, 240)
         self.text_not_align(self.font3, 15,"24", self.black, 870, 238)
 
+        # Red tiles
+        self.image_not_center("tile", 790, 270, 30, 30, "sprite/Tile_not_revealed")
+        self.text_not_align(self.font3, 12,"X", self.black, 860, 280)
+        self.text_not_align(self.font3, 15,"24", self.black, 870, 288)
+
       
     def draw_board(self):
         self.size = (13, 13)
