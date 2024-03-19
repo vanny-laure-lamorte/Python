@@ -7,6 +7,7 @@ class Screen:
         self.H = 700
         self.Window = pygame.display.set_mode((self.W, self.H))
         pygame.display.set_caption("Mines Weeper")
+        pygame.display.set_icon(pygame.image.load("assets/image/icon-jerry.png"))
         self.clock = pygame.time.Clock()
 
     def update(self):

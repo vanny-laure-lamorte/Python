@@ -5,6 +5,8 @@ class Element(Screen):
         Screen.__init__(self)
 
         self.red1 = (161,15,15) # Mines weeper - menu option
+        self.red2 = (199,28,21) # Mines weeper - menu option
+
         self.white = (255, 255, 255) # Mines weeper - name game
         self.yellow = (233, 164, 41)  # Mines weeper - menu option
 
@@ -65,7 +67,6 @@ class Element(Screen):
         self.font2 = "assets/font/Sunny Spells Basic.ttf" # Mines weeper - home
         self.font3 = "assets/font/Roboto-Medium.ttf" # Mines weeper - copyright
 
-
         self.font4 = "assets/font/gg sans Semibold.ttf"
         self.font5 = "assets/font/gg sans Bold.ttf"
 
@@ -76,13 +77,12 @@ class Element(Screen):
         text = pygame.font.Font(f"{font}", text_size).render(text_content, True,color)
         text_rect = text.get_rect(center=(x, y))
         self.Window.blit(text, text_rect)
-    
+
     # Mines weeper - home
     def text_not_align(self, font, text_size, text_content, color, x, y): 
         text = pygame.font.Font(f"{font}", text_size).render(text_content, True, color)
         text_rect = text.get_rect(topleft=(x, y))
         self.Window.blit(text, text_rect)
-    
 
     def text_center_italic(self, font, text_size, text_content, color, x, y):
         pygame.font.init()
