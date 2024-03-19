@@ -25,6 +25,7 @@ class Home (Element, Screen):
         self.input_name_rect = self.button_hover(440, 400, 240, 50, self.yellow, self.white, self.yellow, self.white, self.input_name, self.font2, self.white, 35, 2, 5)
         self.button_hover(440, 470, 180, 50, self.red1, self.white, self.red2, self.white, "Normal", self.font2, self.white, 35, 2, 5)
         self.button_hover(440, 530, 180, 50, self.red1, self.white, self.red2, self.white, "Expert", self.font2, self.white, 35, 2, 5)
+        self.button_hover(440, 590, 180, 50, self.red1, self.white, self.red2, self.white, "Meilleur Score", self.font2, self.white, 35, 2, 5)
 
         # Copyright
         self.text_not_align(self.font3, 15,"©", self.white, 345, 678)
@@ -54,7 +55,7 @@ class Home (Element, Screen):
                     if event.key == pygame.K_BACKSPACE:
                         self.input_name = self.input_name[:-1]
                     else:
-                        if event.unicode:
+                        if event.unicode and len(self.input_name) < 14:
                             self.input_name += event.unicode
             self.design()
             self.update()
