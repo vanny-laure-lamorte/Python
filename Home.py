@@ -1,20 +1,21 @@
 import pygame
+import json
 from source.pygame_manager.Element import Element
 from source.pygame_manager.Screen import Screen
 
-class Home (Element, Screen): 
+class Home (Element, Screen):
     def __init__(self):
         Element.__init__(self)
         Screen.__init__(self)
         self.input_name = "ENTER YOUR NAME"
-   
+
     def design(self):
 
         # Background
         self.img_background("home1", 450, 350, 900, 700, "home1")
 
         # Image
-        self.image_not_center("home2", 250, 20, 400, 400, "home2")       
+        self.image_not_center("home2", 250, 20, 400, 400, "home2")
 
         # Title
         self.text_not_align(self.font1, 50,"Mines Weeper ", self.white, 320, 280)
@@ -25,9 +26,9 @@ class Home (Element, Screen):
         self.button_hover(440, 470, 180, 50, self.red1, self.white, self.red2, self.white, "Normal", self.font2, self.white, 35, 2, 5)
         self.button_hover(440, 530, 180, 50, self.red1, self.white, self.red2, self.white, "Expert", self.font2, self.white, 35, 2, 5)
 
-        # Copyright  
+        # Copyright
         self.text_not_align(self.font3, 15,"©", self.white, 345, 678)
-     
+
         self.text_not_align(self.font3, 10,"Copyright 2024 | All Rights Reserved ", self.white, 360, 680)
 
     def run_home(self):
@@ -38,14 +39,18 @@ class Home (Element, Screen):
                     home_running = False
 
                 elif event.type == pygame.MOUSEBUTTONDOWN:
-                    if self.input_name_rect.collidepoint(event.pos): 
+                    if self.input_name_rect.collidepoint(event.pos):
                         self.entry = True
                         self.entry = 1
                         self.input_name = ""
                     else:
-                         self.entry = False
+                        self.entry = False
 
-                elif event.type == pygame.KEYDOWN and self.entry :
+                elif event.type == pygame.KEYDOWN and self.entry:
+                    if event.key == pygame.K_RETURN:
+                        if self.input_name:
+                            self.save_player_name()
+
                     if event.key == pygame.K_BACKSPACE:
                         self.input_name = self.input_name[:-1]
                     else:
@@ -53,6 +58,18 @@ class Home (Element, Screen):
                             self.input_name += event.unicode
             self.design()
             self.update()
+
+    def save_player_name(self):
+        try:
+            with open('player_name.json', 'r') as file:
+                data = json.load(file)
+        except (FileNotFoundError, json.decoder.JSONDecodeError):
+            data = []
+
+        data.append(self.input_name)
+
+        with open('player_name.json', 'w') as file:
+            json.dump(data, file)
 
 home = Home()
 home.run_home()
