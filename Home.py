@@ -81,11 +81,9 @@ class Home (Element, Screen):
                     else:
                         if event.unicode:
                             self.input_name += event.unicode
-
             self.design()
             self.timer_game()
             self.update()
 
-      
 home = Home()
 home.run_home()

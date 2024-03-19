@@ -68,7 +68,6 @@ class Element(Screen):
         self.font2 = "assets/font/Sunny Spells Basic.ttf" # Mines weeper - home
         self.font3 = "assets/font/Roboto-Medium.ttf" # Mines weeper - copyright
 
-
         self.font4 = "assets/font/gg sans Semibold.ttf"
         self.font5 = "assets/font/gg sans Bold.ttf"
 
@@ -79,13 +78,12 @@ class Element(Screen):
         text = pygame.font.Font(f"{font}", text_size).render(text_content, True,color)
         text_rect = text.get_rect(center=(x, y))
         self.Window.blit(text, text_rect)
-    
+
     # Mines weeper - home
     def text_not_align(self, font, text_size, text_content, color, x, y): 
         text = pygame.font.Font(f"{font}", text_size).render(text_content, True, color)
         text_rect = text.get_rect(topleft=(x, y))
         self.Window.blit(text, text_rect)
-    
 
     def text_center_italic(self, font, text_size, text_content, color, x, y):
         pygame.font.init()
@@ -100,14 +98,16 @@ class Element(Screen):
         name = pygame.image.load(f'assets/image/{image_name}.png')
         name = pygame.transform.scale(name, (width, height))
         self.Window.blit(name, (x - name.get_width()//2, y - name.get_height()//2))
-        return name
+        button = pygame.Rect((x - width//2), (y - height//2), width, height)
+        return button
 
     # Mines weeper - Tom and Jerry Logo
     def image_not_center(self, name, x, y, width, height, image_name):
         name = pygame.image.load(f'assets/image/{image_name}.png').convert_alpha()
         name = pygame.transform.scale(name,(width,height))
         self.Window.blit(name, (x,y))
-        return name
+        button = pygame.Rect(x, y, width, height)
+        return button
         
     # Mines weeper - home background
     def img_background(self, name, x, y, width, height, image_name):
