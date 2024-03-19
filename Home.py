@@ -1,4 +1,4 @@
-import pygame, sys
+import pygame
 from source.pygame_manager.Element import Element
 from source.pygame_manager.Screen import Screen
 
