@@ -1,4 +1,5 @@
 import pygame, sys
+import time
 from source.pygame_manager.Element import Element
 from source.pygame_manager.Screen import Screen
 
@@ -7,7 +8,24 @@ class Home (Element, Screen):
         Element.__init__(self)
         Screen.__init__(self)
         self.input_name = "ENTER YOUR NAME"
-   
+
+        # Timer
+        self.start_time = time.time()
+        self.clock = pygame.time.Clock()
+
+    def timer_game(self):
+
+        self.elapsed_time = time.time() - self.start_time
+
+        minutes = int((self.elapsed_time % 3600) // 60)
+        seconds = int(self.elapsed_time % 60)
+        self.formatted_time = "{:02d}:{:02d}".format(minutes, seconds)
+        print (self.formatted_time)
+
+        # Display
+        self.image_not_center("game_chrono",250, 400, 60, 60, "game_chrono")
+        self.text_not_align(self.font3, 15,self.formatted_time, self.black, 60, 400)
+
     def design(self):
 
         # Background
@@ -30,12 +48,24 @@ class Home (Element, Screen):
      
         self.text_not_align(self.font3, 10,"Copyright 2024 | All Rights Reserved ", self.white, 360, 680)
 
+        
+     
+        
+
+
+ 
+
+
+      
+    
     def run_home(self):
         home_running = True
         while home_running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     home_running = False
+
+            
 
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if self.input_name_rect.collidepoint(event.pos): 
@@ -53,6 +83,7 @@ class Home (Element, Screen):
                             self.input_name += event.unicode
 
             self.design()
+            self.timer_game()
             self.update()
 
       
