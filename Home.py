@@ -9,23 +9,6 @@ class Home (Element, Screen):
         Screen.__init__(self)
         self.input_name = "ENTER YOUR NAME"
 
-        # Timer
-        self.start_time = time.time()
-        self.clock = pygame.time.Clock()
-
-    def timer_game(self):
-
-        self.elapsed_time = time.time() - self.start_time
-
-        minutes = int((self.elapsed_time % 3600) // 60)
-        seconds = int(self.elapsed_time % 60)
-        self.formatted_time = "{:02d}:{:02d}".format(minutes, seconds)
-        print (self.formatted_time)
-
-        # Display
-        self.image_not_center("game_chrono",250, 400, 60, 60, "game_chrono")
-        self.text_not_align(self.font3, 15,self.formatted_time, self.black, 60, 400)
-
     def design(self):
 
         # Background
