@@ -1,5 +1,5 @@
-import pygame, sys
-import time
+import pygame
+import json
 from source.pygame_manager.Element import Element
 from source.pygame_manager.Screen import Screen
 
@@ -8,6 +8,7 @@ class Home (Element, Screen):
         Element.__init__(self)
         Screen.__init__(self)
         self.input_name = "ENTER YOUR NAME"
+        self.entry = False
 
     def design(self):
 
@@ -31,15 +32,6 @@ class Home (Element, Screen):
      
         self.text_not_align(self.font3, 10,"Copyright 2024 | All Rights Reserved ", self.white, 360, 680)
 
-        
-     
-        
-
-
- 
-
-
-      
     
     def run_home(self):
         home_running = True
@@ -59,13 +51,19 @@ class Home (Element, Screen):
                          self.entry = False
 
                 elif event.type == pygame.KEYDOWN and self.entry :
-                    if event.key == pygame.K_BACKSPACE:
+
+                    if event.key == pygame.K_RETURN:
+                        with open("player_name.json", "w") as f:
+                            json.dump({"name": self.input_name}, f)
+                        self.entry = False
+
+                    elif event.key == pygame.K_BACKSPACE:
                         self.input_name = self.input_name[:-1]
                     else:
                         if event.unicode:
                             self.input_name += event.unicode
             self.design()
-            self.timer_game()
+            # self.timer_game()
             self.update()
 
 home = Home()

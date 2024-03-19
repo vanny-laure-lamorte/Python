@@ -46,10 +46,14 @@ class Game (Element, Screen):
         # Red tiles
         self.image_not_center("tile", 800, 310, 40, 40, "sprite/Tile_not_revealed")
         self.text_not_align(self.font3, 12,"X", self.black, 860, 330)
-        self.text_not_align(self.font3, 15,"24", self.black, 870, 328)
+        self.text_not_align(self.font3, 15,"777", self.black, 870, 328)
 
         # Rect Jerry
-        self.button_hover( 62, 310, 110, 200, self.orange, self.white, self.red1, self.white, "", self.font1, self.white, 12, 2, 5)
+        self.button_hover(62, 310, 110, 200, self.orange, self.white, self.red1, self.white, "", self.font1, self.white, 12, 2, 5)
+
+        # Retour Menu
+        self.rect_menu = self.button_hover(62, 45, 100, 40, self.red1, self.white, self.yellow, self.white, "BACK TO MENU", self.font2, self.white,18, 2, 5)
+
 
 
     def game_restart(self):
@@ -75,10 +79,12 @@ class Game (Element, Screen):
                 self.board_list.append(tile)
 
     def game_run(self):
+
         while self.game_running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.game_running = False
+
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     for tile in self.board_list:
                         if tile.collidepoint(event.pos):
@@ -86,6 +92,9 @@ class Game (Element, Screen):
                                 print(tile, "case")
                             elif event.button == 3:
                                 print(tile, "flag")
+
+                        elif self.rect_menu.collidepoint(event.pos):
+                            self.game_running = False
                         
             self.timer_game()
             self.design()

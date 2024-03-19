@@ -70,6 +70,9 @@ class Element(Screen):
         self.font4 = "assets/font/gg sans Semibold.ttf"
         self.font5 = "assets/font/gg sans Bold.ttf"
 
+        # Image
+        
+
 # Def text          
 
     def text_center(self, font, text_size, text_content, color, x, y):
