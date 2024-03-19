@@ -5,6 +5,8 @@ class Element(Screen):
         Screen.__init__(self)
 
         self.red1 = (161,15,15) # Mines weeper - menu option
+        self.red2 = (199,28,21) # Mines weeper - menu option
+
         self.white = (255, 255, 255) # Mines weeper - name game
         self.yellow = (233, 164, 41)  # Mines weeper - menu option
 
