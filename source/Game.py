@@ -11,11 +11,14 @@ class Game(Element, Screen):
         self.board = Board(size)
         Element.__init__(self)
         Screen.__init__(self)
+
+        # Bomb
         self.size = size
         self.board_list = []
         self.game_running = True
         self.discovered_tile = []
         self.bomb_count = self.board.is_bomb()
+        self.board_list = []
 
           # Timer
         self.start_time = time.time()
@@ -31,6 +34,11 @@ class Game(Element, Screen):
         self.img_picture_restart = pygame.image.load('assets/image/game_restart.png').convert_alpha()
         self.img_picture_win = pygame.image.load('assets/image/game_win.png').convert_alpha()
         self.img_picture_lose = pygame.image.load('assets/image/game_mad.png').convert_alpha()
+
+        self.img_picture_flag = pygame.image.load('assets/image/game_f.png').convert_alpha()
+        self.img_picture_question = pygame.image.load('assets/image/game_q.png').convert_alpha()
+
+
 
     def timer_game(self):
 
@@ -91,27 +99,48 @@ class Game(Element, Screen):
         self.image_not_center("picture lose", 15, 220, 100, 180, self.img_picture_lose)
 
     def draw_board(self):
-        self.board_list = []
         for row in range(self.size[1]):
             for col in range(self.size[0]):
                 x = col * 51
                 y = row * 51
+
                 if (row, col) not in [item[0] for item in self.discovered_tile]:
                     tile_rect = pygame.Rect(self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50)
-                    self.board_list.append((tile_rect, (row, col)))
-                    self.image_not_center("tile", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50, self.img_tile_not_revealed)
 
-                else: 
-                    discovered = False
-                    for tile in self.discovered_tile:
-                        if tile[0] == (row, col):
-                            discovered = tile[1]
-                            break
-                    if discovered:
-                        self.image_not_center("tile", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50, self.img_tile_bomb)
+                    if len(self.board_list) < self.size[0] * self.size[1]: 
+                        self.board_list.append([tile_rect, (row, col), 0])
+                self.image_not_center("tile", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50, self.img_tile_not_revealed)
+                if self.board_list[int(row * col)][2] == 1:
 
-                    else:
-                        self.image_not_center("tile", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50, self.img_tile_empty)
+                    self.image_not_center("game_f", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50,  self.img_picture_flag)
+ 
+        # for item in self.board_list:
+
+
+        #     if item[2] == 1:
+        #         print("Heyhey")
+
+        #         self.image_not_center("game_f", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50,  self.img_picture_flag)
+                
+        #     elif item[2] == 2: 
+        #         # self.image_not_center("tile", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50, self.img_tile_not_revealed)
+
+        #         self.image_not_center("game_q", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50,  self.img_picture_question)
+
+                    # else:
+                        # self.image_not_center("tile", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50, self.img_tile_not_revealed)
+
+                # else: 
+                #     discovered = False
+                #     for tile in self.discovered_tile:
+                #         if tile[0] == (row, col):
+                #             discovered = tile[1]
+                #             break
+                #     if discovered:
+                #         self.image_not_center("tile", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50, self.img_tile_bomb)
+
+                #     else:
+                #         self.image_not_center("tile", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50, self.img_tile_empty)
 
 
     def check_bomb(self, row, col):
@@ -131,12 +160,24 @@ class Game(Element, Screen):
 
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:
-                        for tile_rect, (row, col) in self.board_list:
+                        for tile_rect, (row, col), z in self.board_list:
                             if tile_rect.collidepoint(event.pos):
                                 self.check_bomb(row, col)
+                                print(z)
+
                     elif event.button == 3:
-                        pass 
-                        print(self.bomb_count)
+                        for item in self.board_list:
+                            if item[0].collidepoint(event.pos):
+
+                                if item[2] == 0:  
+                                    item[2] = 1  
+                                elif item[2] == 1:  
+                                    item[2] = 2
+
+                                else:
+                                    item[2]= 0
+                                print(item[2])
+                                
 
                     elif self.rect_menu.collidepoint(event.pos):
                             self.game_running = False
