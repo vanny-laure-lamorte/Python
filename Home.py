@@ -8,6 +8,7 @@ class Home (Element, Screen):
         Element.__init__(self)
         Screen.__init__(self)
         self.input_name = "ENTER YOUR NAME"
+        self.entry = False
 
     def design(self):
 
@@ -32,12 +33,15 @@ class Home (Element, Screen):
 
         self.text_not_align(self.font3, 10,"Copyright 2024 | All Rights Reserved ", self.white, 360, 680)
 
+    
     def run_home(self):
         home_running = True
         while home_running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     home_running = False
+
+            
 
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if self.input_name_rect.collidepoint(event.pos):
@@ -58,6 +62,7 @@ class Home (Element, Screen):
                         if event.unicode and len(self.input_name) < 14:
                             self.input_name += event.unicode
             self.design()
+            # self.timer_game()
             self.update()
 
     def save_player_name(self):

@@ -6,11 +6,12 @@ class Element(Screen):
 
         self.red1 = (161,15,15) # Mines weeper - menu option
         self.red2 = (199,28,21) # Mines weeper - menu option
-
         self.white = (255, 255, 255) # Mines weeper - name game
         self.yellow = (233, 164, 41)  # Mines weeper - menu option
         
         self.orange = (220, 130, 77)
+
+        self.orange = (220, 130, 77) # Mines weeper 
 
         # Color not used
         self.black = (0, 0, 0) 
@@ -58,6 +59,7 @@ class Element(Screen):
         self.lightbluesea = (39, 76, 119)
         self.yellow = (233, 164, 41)   
         self.lightyellow = (244, 226, 133)
+        self.orange2 = (255, 103, 2) 
         self.red = (242, 106, 141)
         self.darkred = (221, 45, 74)
         self.brown = (75, 67, 67)
@@ -70,6 +72,8 @@ class Element(Screen):
         self.font4 = "assets/font/gg sans Semibold.ttf"
         self.font5 = "assets/font/gg sans Bold.ttf"
 
+        # Image
+        
 # Def text          
 
     def text_center(self, font, text_size, text_content, color, x, y):
