@@ -8,6 +8,8 @@ class Element(Screen):
         self.red2 = (199,28,21) # Mines weeper - menu option
         self.white = (255, 255, 255) # Mines weeper - name game
         self.yellow = (233, 164, 41)  # Mines weeper - menu option
+        
+        self.orange = (220, 130, 77)
 
         self.orange = (220, 130, 77) # Mines weeper 
 
@@ -72,7 +74,6 @@ class Element(Screen):
 
         # Image
         
-
 # Def text          
 
     def text_center(self, font, text_size, text_content, color, x, y):
