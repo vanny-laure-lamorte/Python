@@ -35,7 +35,6 @@ class Game(Element, Screen):
         self.img_picture_lose = pygame.image.load('assets/image/game_mad.png').convert_alpha()
 
     def timer_game(self):
-
         self.elapsed_time = time.time() - self.start_time
 
         minutes = int((self.elapsed_time % 3600) // 60)
@@ -47,9 +46,7 @@ class Game(Element, Screen):
         self.clock = pygame.time.Clock()
 
     def timer_game(self):
-
         self.elapsed_time = time.time() - self.start_time
-
         minutes = int((self.elapsed_time % 3600) // 60)
         seconds = int(self.elapsed_time % 60)
         self.formatted_time = "{:02d}:{:02d}".format(minutes, seconds)
@@ -59,37 +56,32 @@ class Game(Element, Screen):
         self.screen_color(self.orange)
 
         # Title
-
         self.text_not_align(self.font1, 50,"Mines Weeper ", self.white, 320, 280)
+
+        # Display player name
+
+        self.text_center(self.font2, 30, f"Don't get caught by the cat {self.username} !", self.white, 460, 30)
+
+        # Retour Menu
+        self.rect_menu = self.button_hover(75, 150, 130, 40, self.orange, self.white, self.orange1, self.white, "BACK TO MENU", self.font2, self.white,25, 2, 5)
+
+        # Restart
+        self.button_hover(75, 200, 130, 40, self.orange, self.white, self.orange1, self.white, "RESTART", self.font2, self.white, 25, 2, 5)
 
         # Timer        
         self. rect_full(self.white, 890, 160, 80, 90, 5)
         self.rect_border(self.orange1, 890, 160, 80, 90, 3, 5)
-
         self.image_not_center("game_chrono", 855, 115, 70, 70, self.img_game_chrono)
         self.text_not_align(self.font3, 15, self.formatted_time, self.black, 875, 185)
 
-
-        # self.image_not_center("game_chrono", 855, 115, 70, 70, self.img_game_chrono)
-        # self.text_not_align(self.font3, 15, "777", self.black, 880, 185)
-
-
         # Tom
-
         self. rect_full(self.white, 890, 260, 80, 90, 5)
         self.rect_border(self.orange1, 890, 260, 80, 90, 3, 5)
         self.image_not_center("tom", 855, 215, 70, 70, self.img_tom)
         self.text_not_align(self.font3, 12, "X", self.black, 865, 285)
         self.text_not_align(self.font3, 15, self.bomb_count, self.black, 880, 283)
 
-        # self. rect_full(self.white, 890, 260, 80, 90, 5)
-        # self.rect_border(self.orange1, 890, 260, 80, 90, 3, 5)
-        # self.image_not_center("tom", 785, 130, 70, 70, self.img_tom)
-        # self.text_not_align(self.font3, 12, "X", self.black, 860, 170)
-        # self.text_not_align(self.font3, 15, self.bomb_count, self.black, 870, 168)
-
         # Red flag
-
         self. rect_full(self.white, 890, 360, 80, 90, 5)
         self.rect_border(self.orange1, 890, 360, 80, 90, 3, 5)
         self.image_not_center("game_flag", 860, 320, 55, 55, self.img_game_flag)
@@ -102,15 +94,6 @@ class Game(Element, Screen):
         self.image_not_center("tile", 868, 425, 40, 40, self.img_tile_not_revealed)
         self.text_not_align(self.font3, 12, "X", self.black, 865, 485)
         self.text_not_align(self.font3, 15,self.tile_count, self.black, 880, 483)
-
-        # Rect Jerry
-        self.button_hover(62, 310, 110, 200, self.orange, self.white, self.red1, self.white, "", self.font1, self.white, 12, 2, 5)
-
-        # Retour Menu
-        self.rect_menu = self.button_hover(890, 30, 100, 40, self.orange1, self.white, self.yellow, self.white, "BACK TO MENU", self.font2, self.white,18, 2, 5)
-        
-        # Player info
-        self.text_not_align(self.font3, 100, self.username , self.pink, 360, 10)
 
     def game_restart(self):
         self.image_not_center("picture restart", 10, 220, 100, 170, self.img_picture_restart)

@@ -38,33 +38,6 @@ class Home (Element, Screen):
         # Background
         self.img_background(475, 375, 950, 750, self.background_image)
 
-    #    Game        
-         # Tom
-        self. rect_full(self.white, 890, 260, 80, 90, 5)
-        self.rect_border(self.orange1, 890, 260, 80, 90, 3, 5)
-        self.image_not_center("tom", 855, 215, 70, 70, self.img_tom)
-        self.text_not_align(self.font3, 12, "X", self.black, 865, 285)
-        self.text_not_align(self.font3, 15, "777", self.black, 880, 283)
-
-        # Red flag
-        self. rect_full(self.white, 890, 360, 80, 90, 5)
-        self.rect_border(self.orange1, 890, 360, 80, 90, 3, 5)
-        self.image_not_center("game_flag", 860, 320, 55, 55, self.img_game_flag)
-        self.text_not_align(self.font3, 12, "X", self.black, 865, 385)
-        self.text_not_align(self.font3, 15, "77", self.black, 880, 383)
-
-        # Red tiles
-        self. rect_full(self.white, 890, 460, 80, 90, 5)
-        self.rect_border(self.orange1, 890, 460, 80, 90, 3, 5)
-        self.image_not_center("tile", 868, 425, 40, 40, self.img_tile_not_revealed)
-        self.text_not_align(self.font3, 12, "X", self.black, 865, 485)
-        self.text_not_align(self.font3, 15, "777", self.black, 880, 483)
-
-
-
-
-        # self. rect_full(self.white, 890, 220, 80, 70, 5)
-
         # Image
         self.image_not_center("home2", 250, 20, 375, 400, self.home_image)
 
