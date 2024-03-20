@@ -189,9 +189,3 @@ class Element(Screen):
 
     def hand_cursor(self):
         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
-
-# Def BackgroundAlpha
-    def screen_alpha(self, color):
-        self.alpha_window = pygame.Surface((self.W, self.H), pygame.SRCALPHA)
-        pygame.draw.rect(self.alpha_window, color, pygame.Rect(0,0, self.W, self.H))
-        self.Window.blit(self.alpha_window, (0,0))
