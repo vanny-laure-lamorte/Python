@@ -105,18 +105,16 @@ class Element(Screen):
         return button
 
     # Mines weeper - Tom and Jerry Logo
-    def image_not_center(self, name, x, y, width, height, image_name):
-        name = pygame.image.load(f'assets/image/{image_name}.png').convert_alpha()
-        name = pygame.transform.scale(name,(width,height))
+    def image_not_center(self, name, x, y, width, height, image):
+        name = pygame.transform.scale(image,(width,height))
         self.Window.blit(name, (x,y))
         button = pygame.Rect(x, y, width, height)
         return button
         
     # Mines weeper - home background
-    def img_background(self, name, x, y, width, height, image_name):
-        name = pygame.image.load(f'assets/image/{image_name}.png').convert_alpha()
-        name = pygame.transform.scale(name, (width, height))
-        self.Window.blit(name, (x - name.get_width()//2, y - name.get_height()//2))
+    def img_background(self, x, y, width, height, image):
+        image = pygame.transform.scale(image, (width, height))
+        self.Window.blit(image, (x - image.get_width()//2, y - image.get_height()//2))
 
     def hover_image(self, name_rect, name, x, y, width, height, image_name, image_name_hover): 
         name_rect = pygame.Rect( x - width//2, y - height//2, width, height)        
