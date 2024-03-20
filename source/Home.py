@@ -9,7 +9,8 @@ class Home (Element, Screen):
         Screen.__init__(self)
         self.input_name = "ENTER YOUR NAME"
         self.entry = False
-        # Charger les images
+
+        # Loading images
         self.background_image = pygame.image.load("assets/image/home1.png")
         self.home_image = pygame.image.load("assets/image/home2.png")
 
@@ -33,9 +34,7 @@ class Home (Element, Screen):
 
         # Copyright
         self.text_not_align(self.font3, 15,"©", self.white, 345, 678)
-
         self.text_not_align(self.font3, 10,"Copyright 2024 | All Rights Reserved ", self.white, 360, 680)
-
     
     def run_home(self):
         home_running = True
@@ -43,8 +42,6 @@ class Home (Element, Screen):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     home_running = False
-
-            
 
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if self.input_name_rect.collidepoint(event.pos):
@@ -55,6 +52,7 @@ class Home (Element, Screen):
                         self.entry = False
 
                 elif event.type == pygame.KEYDOWN and self.entry:
+                    
                     if event.key == pygame.K_RETURN:
                         if self.input_name:
                             self.save_player_name()

@@ -100,6 +100,7 @@ class Game(Element, Screen):
     def game_lose(self): 
         self.image_not_center("picture lose", 15, 220, 100, 180, self.img_picture_lose)
 
+
     def draw_board(self):
         for row in range(self.size[1]):
             for col in range(self.size[0]):
@@ -112,7 +113,7 @@ class Game(Element, Screen):
                     if len(self.board_list) < self.size[0] * self.size[1]: 
                         self.board_list.append([tile_rect, (row, col), 0])
                 self.image_not_center("tile", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50, self.img_tile_not_revealed)
-                if self.board_list[int(row * col)][2] == 1:
+                if self.board_list[int(col * row)][2] == 1:
 
                     self.image_not_center("game_f", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50,  self.img_picture_flag)
  
@@ -182,7 +183,7 @@ class Game(Element, Screen):
                                     item[2] = 2
                                 else:
                                     item[2]= 0
-                                self.draw_board()
+                        self.draw_board()
 
                     elif self.rect_menu.collidepoint(event.pos):
                             self.game_running = False
