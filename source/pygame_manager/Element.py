@@ -4,6 +4,7 @@ class Element(Screen):
     def __init__(self):
         Screen.__init__(self)
 
+        self.red = (255,0,0) 
         self.red1 = (161,15,15) # Mines weeper - menu option
         self.red2 = (199,28,21) # Mines weeper - menu option
         self.white = (255, 255, 255) # Mines weeper - name game
@@ -60,7 +61,6 @@ class Element(Screen):
         self.yellow = (233, 164, 41)   
         self.lightyellow = (244, 226, 133)
         self.orange2 = (255, 103, 2) 
-        self.red = (242, 106, 141)
         self.darkred = (221, 45, 74)
         self.brown = (75, 67, 67)
 
@@ -68,9 +68,11 @@ class Element(Screen):
         self.font1 = "assets/font/MickeyMouseLine_PERSONAL_USE_ONLY.otf" # Mines weeper - home
         self.font2 = "assets/font/Sunny Spells Basic.ttf" # Mines weeper - home
         self.font3 = "assets/font/Roboto-Medium.ttf" # Mines weeper - copyright
+        self.font4 = "assets/font/Roboto-BoldCondensedItalic.ttf" # Mines weeper - copyright
 
-        self.font4 = "assets/font/gg sans Semibold.ttf"
-        self.font5 = "assets/font/gg sans Bold.ttf"
+        # self.font4 = "assets/font/gg sans Semibold.ttf"
+        # self.font5 = "assets/font/gg sans Bold.ttf"
+
 
         # Image
         

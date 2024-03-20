@@ -11,6 +11,7 @@ class Home (Element, Screen):
         Screen.__init__(self)
         self.input_name = "ENTER YOUR NAME"
         self.entry = False
+        self.error_message = False
 
         # Loading images
         self.background_image = pygame.image.load("assets/image/home1.png")
@@ -22,25 +23,31 @@ class Home (Element, Screen):
     def design(self):
 
         # Background
-        self.img_background(450, 350, 900, 700, self.background_image)
+        self.img_background(475, 375, 950, 750, self.background_image)
 
         # Image
-        self.image_not_center("home2", 250, 20, 400, 400, self.home_image)
+        self.image_not_center("home2", 250, 20, 375, 400, self.home_image)
 
         # Title
         self.text_not_align(self.font1, 50,"Mines Weeper ", self.white, 320, 280)
         self.text_not_align(self.font1, 30,"— TOM & JERRY Version", self.white, 320, 320)
 
         # Options menu
-        self.input_name_rect = self.button_hover(440, 400, 240, 50, self.yellow, self.white, self.yellow, self.white, self.input_name, self.font2, self.white, 35, 2, 5)
+        self.input_name_rect = self.button_hover(440, 390, 240, 50, self.yellow, self.white, self.yellow, self.white, self.input_name, self.font2, self.white, 35, 2, 5)
         self.btn_normal = self.button_hover(440, 470, 180, 50, self.red1, self.white, self.red2, self.white, "Normal", self.font2, self.white, 35, 2, 5)
         self.btn_expert = self.button_hover(440, 530, 180, 50, self.red1, self.white, self.red2, self.white, "Expert", self.font2, self.white, 35, 2, 5)
         self.button_hover(440, 590, 180, 50, self.red1, self.white, self.red2, self.white, "Meilleur Score", self.font2, self.white, 35, 2, 5)
 
         # Copyright
-        self.text_not_align(self.font3, 15,"©", self.white, 345, 678)
+        self.text_not_align(self.font3, 15,"©", self.white, 345, 722.5)
 
-        self.text_not_align(self.font3, 10,"Copyright 2024 | All Rights Reserved ", self.white, 360, 680)
+        self.text_not_align(self.font3, 10,"Copyright 2024 | All Rights Reserved ", self.white, 360, 725)
+
+        if self.error_message:
+            self.text_not_align(self.font4, 12,"INVALID USERNAME", self.red, 460, 420)
+
+        # self.text_not_align(self.font4, 12,"INVALID USERNAME", self.red, 460, 420)
+
 
     
     def run_home(self):
@@ -52,20 +59,28 @@ class Home (Element, Screen):
 
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if self.input_name_rect.collidepoint(event.pos):
+                        if self.input_name == "ENTER YOUR NAME":
+                            self.input_name = ""
                         self.entry = True
+                        self.error_message = False
                         self.entry = 1
-                        self.input_name = ""
+                        
                     elif self.btn_normal.collidepoint(event.pos):
-                        g = Game((9,9), self.input_name)
-                        g.game_run()
+                        if self.input_name == "" or self.input_name == "ENTER YOUR NAME":
+                            self.error_message = True
+
+                        else:
+                            g = Game((9,9), self.input_name)
+                            g.game_run()
 
                     elif self.btn_expert.collidepoint(event.pos):
-                        g = Game((13,13), self.input_name)
-                        g.game_run()
+                        if self.input_name == "" or self.input_name == "ENTER YOUR NAME":
+                            self.error_message = True
+                        else:
+                            g = Game((12,12), self.input_name)
+                            g.game_run()
                     else:
                         self.entry = False
-
-                    
 
                 elif event.type == pygame.KEYDOWN and self.entry:
                     if event.key == pygame.K_RETURN:

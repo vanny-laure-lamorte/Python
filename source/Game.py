@@ -17,6 +17,7 @@ class Game(Element, Screen):
         self.discovered_tile = []
         self.bomb_count = self.board.is_bomb()
         self.username = username
+        self.tile_count = self.size[0]*self.size[1]
 
           # Timer
         self.start_time = time.time()
@@ -74,7 +75,7 @@ class Game(Element, Screen):
         # Red tiles
         self.image_not_center("tile", 800, 310, 40, 40, self.img_tile_not_revealed)
         self.text_not_align(self.font3, 12, "X", self.black, 860, 330)
-        self.text_not_align(self.font3, 15, "777", self.black, 870, 328)
+        self.text_not_align(self.font3, 15, self.tile_count, self.black, 870, 328)
 
         # Rect Jerry
         self.button_hover(62, 310, 110, 200, self.orange, self.white, self.red1, self.white, "", self.font1, self.white, 12, 2, 5)
@@ -134,15 +135,16 @@ class Game(Element, Screen):
                     self.game_running = False
 
                 elif event.type == pygame.MOUSEBUTTONDOWN:
-                    if event.button == 1:
+
+                    if self.rect_menu.collidepoint(event.pos):
+                        self.game_running = False
+                    elif event.button == 1:
                         for tile_rect, (row, col) in self.board_list:
                             if tile_rect.collidepoint(event.pos):
                                 self.check_bomb(row, col)
                     elif event.button == 3:
                         pass 
 
-                    elif self.rect_menu.collidepoint(event.pos):
-                            self.game_running = False
                         
             self.timer_game()
             self.design()

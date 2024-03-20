@@ -3,8 +3,8 @@ import pygame
 class Screen:
     def __init__(self):
         pygame.init()
-        self.W = 900
-        self.H = 700
+        self.W = 950
+        self.H = 750
         self.Window = pygame.display.set_mode((self.W, self.H))
         pygame.display.set_caption("Mines Weeper")
         pygame.display.set_icon(pygame.image.load("assets/image/icon-jerry.png"))
