@@ -21,13 +21,14 @@ class Game(Element, Screen):
         self.board_list = []
 
           # Timer
-        self.start_time = time.time()
-        self.clock = pygame.time.Clock()
+        self.timer_started = False
+        self.formatted_time = "00:00"
+        
 
         # Chargement des images
         self.img_game_chrono = pygame.image.load('assets/image/game_chrono.png').convert_alpha()
         self.img_tom = pygame.image.load('assets/image/game_tom.png').convert_alpha()
-        self.img_game_flag = pygame.image.load('assets/image/game_flag.png').convert_alpha()
+        # self.img_game_flag = pygame.image.load('assets/image/game_flag.png').convert_alpha()
         self.img_tile_empty = pygame.image.load('assets/image/sprite/Tile_empty.png').convert_alpha()
         self.img_tile_not_revealed = pygame.image.load('assets/image/sprite/Tile_not_revealed.png').convert_alpha()
         self.img_tile_bomb = pygame.image.load('assets/image/sprite/Tile_is_bomb.png').convert_alpha()
@@ -66,6 +67,7 @@ class Game(Element, Screen):
 
         # Timer
         self.image_not_center("game_chrono", 780, 50, 70, 70, self.img_game_chrono)
+
         self.text_not_align(self.font3, 15, self.formatted_time, self.black, 852, 90)
 
         # Tom
@@ -74,7 +76,7 @@ class Game(Element, Screen):
         self.text_not_align(self.font3, 15, "24", self.black, 870, 168)
 
         # Red flag
-        self.image_not_center("game_flag", 785, 220, 80, 80, self.img_game_flag)
+        self.image_not_center("game_f", 785, 220, 80, 80, self.img_picture_flag)
         self.text_not_align(self.font3, 12, "X", self.black, 860, 250)
         self.text_not_align(self.font3, 15, "24", self.black, 870, 248)
 
@@ -160,10 +162,15 @@ class Game(Element, Screen):
 
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:
+
                         for tile_rect, (row, col), z in self.board_list:
                             if tile_rect.collidepoint(event.pos):
                                 self.check_bomb(row, col)
                                 print(z)
+                                if not self.timer_started:
+                                    self.timer_started = True
+                                    self.start_time = time.time()
+
 
                     elif event.button == 3:
                         for item in self.board_list:
@@ -173,16 +180,16 @@ class Game(Element, Screen):
                                     item[2] = 1  
                                 elif item[2] == 1:  
                                     item[2] = 2
-
                                 else:
                                     item[2]= 0
-                                print(item[2])
-                                
+                                self.draw_board()
 
                     elif self.rect_menu.collidepoint(event.pos):
                             self.game_running = False
-                        
-            self.timer_game()
+
+            if self.timer_started:
+                self.timer_game()
+
             self.design()
             self.draw_board()
             # self.game_restart()
