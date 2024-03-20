@@ -17,6 +17,19 @@ class Home (Element, Screen):
         self.background_image = pygame.image.load("assets/image/home1.png")
         self.home_image = pygame.image.load("assets/image/home2.png")
 
+
+        # test 
+        self.img_game_chrono = pygame.image.load('assets/image/game_chrono.png').convert_alpha()
+        self.img_tom = pygame.image.load('assets/image/game_tom.png').convert_alpha()
+        self.img_game_flag = pygame.image.load('assets/image/game_flag.png').convert_alpha()
+        self.img_tile_empty = pygame.image.load('assets/image/sprite/Tile_empty.png').convert_alpha()
+        self.img_tile_not_revealed = pygame.image.load('assets/image/sprite/Tile_not_revealed.png').convert_alpha()
+        self.img_tile_bomb = pygame.image.load('assets/image/sprite/Tile_is_bomb.png').convert_alpha()
+        self.img_picture_restart = pygame.image.load('assets/image/game_restart.png').convert_alpha()
+        self.img_picture_win = pygame.image.load('assets/image/game_win.png').convert_alpha()
+        self.img_picture_lose = pygame.image.load('assets/image/game_mad.png').convert_alpha()
+
+
         # Player info
         self.player_info_list = []
 
@@ -24,6 +37,33 @@ class Home (Element, Screen):
 
         # Background
         self.img_background(475, 375, 950, 750, self.background_image)
+
+    #    Game        
+         # Tom
+        self. rect_full(self.white, 890, 260, 80, 90, 5)
+        self.rect_border(self.orange1, 890, 260, 80, 90, 3, 5)
+        self.image_not_center("tom", 855, 215, 70, 70, self.img_tom)
+        self.text_not_align(self.font3, 12, "X", self.black, 865, 285)
+        self.text_not_align(self.font3, 15, "777", self.black, 880, 283)
+
+        # Red flag
+        self. rect_full(self.white, 890, 360, 80, 90, 5)
+        self.rect_border(self.orange1, 890, 360, 80, 90, 3, 5)
+        self.image_not_center("game_flag", 860, 320, 55, 55, self.img_game_flag)
+        self.text_not_align(self.font3, 12, "X", self.black, 865, 385)
+        self.text_not_align(self.font3, 15, "77", self.black, 880, 383)
+
+        # Red tiles
+        self. rect_full(self.white, 890, 460, 80, 90, 5)
+        self.rect_border(self.orange1, 890, 460, 80, 90, 3, 5)
+        self.image_not_center("tile", 868, 425, 40, 40, self.img_tile_not_revealed)
+        self.text_not_align(self.font3, 12, "X", self.black, 865, 485)
+        self.text_not_align(self.font3, 15, "777", self.black, 880, 483)
+
+
+
+
+        # self. rect_full(self.white, 890, 220, 80, 70, 5)
 
         # Image
         self.image_not_center("home2", 250, 20, 375, 400, self.home_image)
@@ -47,9 +87,28 @@ class Home (Element, Screen):
             self.text_not_align(self.font4, 12,"INVALID USERNAME", self.red, 460, 420)
 
         # self.text_not_align(self.font4, 12,"INVALID USERNAME", self.red, 460, 420)
-
-
+            
     
+    def save_player_name(self):
+        try:
+            with open('player_name.json', 'r') as file:
+                data = json.load(file)
+        except (FileNotFoundError, json.decoder.JSONDecodeError):
+            data = []
+
+        data.append((self.input_name, self.score))
+
+        with open('player_name.json', 'w') as file:
+            json.dump(data, file)
+
+    def player_info(self): 
+        try:
+            with open('player_name.json', 'r') as file:
+                self.player_info_list = json.load(file)
+
+        except(FileNotFoundError, json.decoder.JSONDecodeError):
+            pass
+
     def run_home(self):
         home_running = True
         while home_running:
@@ -77,7 +136,7 @@ class Home (Element, Screen):
                         if self.input_name == "" or self.input_name == "ENTER YOUR NAME":
                             self.error_message = True
                         else:
-                            g = Game((12,12), self.input_name)
+                            g = Game((13,13), self.input_name)
                             g.game_run()
                     else:
                         self.entry = False
@@ -96,25 +155,5 @@ class Home (Element, Screen):
             # self.timer_game()
             self.player_info()
             self.update()
-
-    def save_player_name(self):
-        try:
-            with open('player_name.json', 'r') as file:
-                data = json.load(file)
-        except (FileNotFoundError, json.decoder.JSONDecodeError):
-            data = []
-
-        data.append((self.input_name, self.score))
-
-        with open('player_name.json', 'w') as file:
-            json.dump(data, file)
-
-    def player_info(self): 
-        try:
-            with open('player_name.json', 'r') as file:
-                self.player_info_list = json.load(file)
-
-        except(FileNotFoundError, json.decoder.JSONDecodeError):
-            pass
 
 

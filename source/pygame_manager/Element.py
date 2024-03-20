@@ -10,7 +10,7 @@ class Element(Screen):
         self.white = (255, 255, 255) # Mines weeper - name game
         self.yellow = (233, 164, 41)  # Mines weeper - menu option
         
-        self.orange = (220, 130, 77)
+        self.orange1 = (231, 63, 19)  # Mines weeper - menu game details
 
         self.orange = (220, 130, 77) # Mines weeper 
 

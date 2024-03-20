@@ -17,7 +17,7 @@ class Game(Element, Screen):
         self.discovered_tile = []
         self.bomb_count = self.board.is_bomb()
         self.username = username
-        self.tile_count = self.size[0]*self.size[1]
+        self.tile_count = str(self.size[0]*self.size[1])
 
           # Timer
         self.start_time = time.time()
@@ -58,30 +58,56 @@ class Game(Element, Screen):
         # Background
         self.screen_color(self.orange)
 
-        # Timer
-        self.image_not_center("game_chrono", 780, 50, 70, 70, self.img_game_chrono)
-        self.text_not_align(self.font3, 15, self.formatted_time, self.black, 852, 90)
+        # Title
+
+        self.text_not_align(self.font1, 50,"Mines Weeper ", self.white, 320, 280)
+
+        # Timer        
+        self. rect_full(self.white, 890, 160, 80, 90, 5)
+        self.rect_border(self.orange1, 890, 160, 80, 90, 3, 5)
+
+        self.image_not_center("game_chrono", 855, 115, 70, 70, self.img_game_chrono)
+        self.text_not_align(self.font3, 15, self.formatted_time, self.black, 875, 185)
+
+
+        # self.image_not_center("game_chrono", 855, 115, 70, 70, self.img_game_chrono)
+        # self.text_not_align(self.font3, 15, "777", self.black, 880, 185)
+
 
         # Tom
-        self.image_not_center("tom", 785, 130, 70, 70, self.img_tom)
-        self.text_not_align(self.font3, 12, "X", self.black, 860, 170)
-        self.text_not_align(self.font3, 15, "24", self.black, 870, 168)
+
+        self. rect_full(self.white, 890, 260, 80, 90, 5)
+        self.rect_border(self.orange1, 890, 260, 80, 90, 3, 5)
+        self.image_not_center("tom", 855, 215, 70, 70, self.img_tom)
+        self.text_not_align(self.font3, 12, "X", self.black, 865, 285)
+        self.text_not_align(self.font3, 15, self.bomb_count, self.black, 880, 283)
+
+        # self. rect_full(self.white, 890, 260, 80, 90, 5)
+        # self.rect_border(self.orange1, 890, 260, 80, 90, 3, 5)
+        # self.image_not_center("tom", 785, 130, 70, 70, self.img_tom)
+        # self.text_not_align(self.font3, 12, "X", self.black, 860, 170)
+        # self.text_not_align(self.font3, 15, self.bomb_count, self.black, 870, 168)
 
         # Red flag
-        self.image_not_center("game_flag", 785, 220, 80, 80, self.img_game_flag)
-        self.text_not_align(self.font3, 12, "X", self.black, 860, 250)
-        self.text_not_align(self.font3, 15, "24", self.black, 870, 248)
 
+        self. rect_full(self.white, 890, 360, 80, 90, 5)
+        self.rect_border(self.orange1, 890, 360, 80, 90, 3, 5)
+        self.image_not_center("game_flag", 860, 320, 55, 55, self.img_game_flag)
+        self.text_not_align(self.font3, 12, "X", self.black, 865, 385)
+        self.text_not_align(self.font3, 15, "77", self.black, 880, 383)
+     
         # Red tiles
-        self.image_not_center("tile", 800, 310, 40, 40, self.img_tile_not_revealed)
-        self.text_not_align(self.font3, 12, "X", self.black, 860, 330)
-        self.text_not_align(self.font3, 15, self.tile_count, self.black, 870, 328)
+        self. rect_full(self.white, 890, 460, 80, 90, 5)
+        self.rect_border(self.orange1, 890, 460, 80, 90, 3, 5)
+        self.image_not_center("tile", 868, 425, 40, 40, self.img_tile_not_revealed)
+        self.text_not_align(self.font3, 12, "X", self.black, 865, 485)
+        self.text_not_align(self.font3, 15,self.tile_count, self.black, 880, 483)
 
         # Rect Jerry
         self.button_hover(62, 310, 110, 200, self.orange, self.white, self.red1, self.white, "", self.font1, self.white, 12, 2, 5)
 
         # Retour Menu
-        self.rect_menu = self.button_hover(62, 45, 100, 40, self.red1, self.white, self.yellow, self.white, "BACK TO MENU", self.font2, self.white,18, 2, 5)
+        self.rect_menu = self.button_hover(890, 30, 100, 40, self.orange1, self.white, self.yellow, self.white, "BACK TO MENU", self.font2, self.white,18, 2, 5)
         
         # Player info
         self.text_not_align(self.font3, 100, self.username , self.pink, 360, 10)
