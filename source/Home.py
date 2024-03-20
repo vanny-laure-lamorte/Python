@@ -9,14 +9,17 @@ class Home (Element, Screen):
         Screen.__init__(self)
         self.input_name = "ENTER YOUR NAME"
         self.entry = False
+        # Charger les images
+        self.background_image = pygame.image.load("assets/image/home1.png")
+        self.home_image = pygame.image.load("assets/image/home2.png")
 
     def design(self):
 
         # Background
-        self.img_background("home1", 450, 350, 900, 700, "home1")
+        self.img_background(450, 350, 900, 700, self.background_image)
 
         # Image
-        self.image_not_center("home2", 250, 20, 400, 400, "home2")
+        self.image_not_center("home2", 250, 20, 400, 400, self.home_image)
 
         # Title
         self.text_not_align(self.font1, 50,"Mines Weeper ", self.white, 320, 280)
@@ -76,6 +79,3 @@ class Home (Element, Screen):
 
         with open('player_name.json', 'w') as file:
             json.dump(data, file)
-
-home = Home()
-home.run_home()
