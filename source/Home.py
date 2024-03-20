@@ -46,10 +46,10 @@ class Home (Element, Screen):
         self.text_not_align(self.font1, 30,"— TOM & JERRY Version", self.white, 320, 320)
 
         # Options menu
-        self.input_name_rect = self.button_hover(440, 390, 240, 50, self.yellow, self.white, self.yellow, self.white, self.input_name, self.font2, self.white, 35, 2, 5)
+        self.input_name_rect = self.button_hover(440, 390, 240, 50, self.orange, self.white, self.orange, self.white, self.input_name, self.font2, self.white, 35, 2, 5)
         self.btn_normal = self.button_hover(440, 470, 180, 50, self.red1, self.white, self.red2, self.white, "Normal", self.font2, self.white, 35, 2, 5)
         self.btn_expert = self.button_hover(440, 530, 180, 50, self.red1, self.white, self.red2, self.white, "Expert", self.font2, self.white, 35, 2, 5)
-        self.button_hover(440, 590, 180, 50, self.red1, self.white, self.red2, self.white, "Meilleur Score", self.font2, self.white, 35, 2, 5)
+        self.button_hover(440, 590, 180, 50, self.red1, self.white, self.red2, self.white, "Custom", self.font2, self.white, 35, 2, 5)
 
         # Copyright
         self.text_not_align(self.font3, 15,"©", self.white, 345, 722.5)

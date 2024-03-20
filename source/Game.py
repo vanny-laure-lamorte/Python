@@ -17,9 +17,9 @@ class Game(Element, Screen):
         self.discovered_tile = []
         self.bomb_count = self.board.is_bomb()
         self.username = username
-        self.tile_count = str(self.size[0]*self.size[1])
-
-          # Timer
+        self.tile_count = int(self.size[0]*self.size[1])
+        
+        # Timer
         self.start_time = time.time()
         self.clock = pygame.time.Clock()
 
@@ -56,17 +56,20 @@ class Game(Element, Screen):
         self.screen_color(self.orange)
 
         # Title
-        self.text_not_align(self.font1, 50,"Mines Weeper ", self.white, 320, 280)
+        self.text_not_align(self.font1, 30,"Mines Weeper ", self.white, 8, 10)
+        self.text_not_align(self.font1, 18,"— by L M, H N & VL", self.white, 10, 38)
 
         # Display player name
-
-        self.text_center(self.font2, 30, f"Don't get caught by the cat {self.username} !", self.white, 460, 30)
+        self.text_center(self.font2, 30, f"DONT GET CAUGHT BY THE CAT {self.username} !", self.white, 460, 30)
 
         # Retour Menu
-        self.rect_menu = self.button_hover(75, 150, 130, 40, self.orange, self.white, self.orange1, self.white, "BACK TO MENU", self.font2, self.white,25, 2, 5)
+        self.rect_menu = self.button_hover(75, 150, 130, 40, self.orange1, self.white, self.orange1, self.white, "BACK TO MENU", self.font2, self.white,25, 2, 5)
 
         # Restart
-        self.button_hover(75, 200, 130, 40, self.orange, self.white, self.orange1, self.white, "RESTART", self.font2, self.white, 25, 2, 5)
+        self.button_hover(75, 200, 130, 40, self.orange1, self.white, self.orange1, self.white, "RESTART", self.font2, self.white, 25, 2, 5)
+
+        # Best time
+
 
         # Timer        
         self. rect_full(self.white, 890, 160, 80, 90, 5)
@@ -89,14 +92,16 @@ class Game(Element, Screen):
         self.text_not_align(self.font3, 15, "77", self.black, 880, 383)
      
         # Red tiles
+
+        remaining_tiles = self.tile_count - len(self.discovered_tile)
+
         self. rect_full(self.white, 890, 460, 80, 90, 5)
         self.rect_border(self.orange1, 890, 460, 80, 90, 3, 5)
         self.image_not_center("tile", 868, 425, 40, 40, self.img_tile_not_revealed)
         self.text_not_align(self.font3, 12, "X", self.black, 865, 485)
-        self.text_not_align(self.font3, 15,self.tile_count, self.black, 880, 483)
+        self.text_not_align(self.font3, 15, str(remaining_tiles), self.black, 880, 483)
 
-    def game_restart(self):
-        self.image_not_center("picture restart", 10, 220, 100, 170, self.img_picture_restart)
+
 
     def game_win(self): 
         self.image_not_center("picture win", 10, 200, 100, 200, self.img_picture_win)
@@ -154,11 +159,9 @@ class Game(Element, Screen):
                     elif event.button == 3:
                         pass 
 
-                        
             self.timer_game()
             self.design()
             self.draw_board()
-            # self.game_restart()
-            self.game_win()
-            # self.game_lose()
+            # self.game_win()
+            self.game_lose()
             self.update()
