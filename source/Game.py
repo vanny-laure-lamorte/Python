@@ -3,7 +3,7 @@ import time
 
 from source.pygame_manager.Element import Element
 from source.pygame_manager.Screen import Screen
-from source.Board_test import Board 
+from source.Board import Board 
 import random
 
 class Game(Element, Screen): 
