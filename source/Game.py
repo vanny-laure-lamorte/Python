@@ -1,7 +1,7 @@
 import pygame
 from source.pygame_manager.Element import Element
 from source.pygame_manager.Screen import Screen
-from source.Board import Board 
+from source.Board_ import Board 
 import random
 
 class Game(Element, Screen): 
