@@ -23,5 +23,3 @@ for _, __, img_files in walk(path):
         img = pygame.image.load(full_path)
         img = pygame.transform.scale(img, (tile_size, tile_size))
         images[image.split(".")[0]] = img
-
-print(field)

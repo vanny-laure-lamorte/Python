@@ -7,7 +7,7 @@ from source.Board import Board
 import random
 
 class Game(Element, Screen): 
-    def __init__(self, size):
+    def __init__(self, size, username):
         self.board = Board(size)
         Element.__init__(self)
         Screen.__init__(self)
@@ -16,6 +16,7 @@ class Game(Element, Screen):
         self.game_running = True
         self.discovered_tile = []
         self.bomb_count = self.board.is_bomb()
+        self.username = username
 
           # Timer
         self.start_time = time.time()
@@ -80,6 +81,9 @@ class Game(Element, Screen):
 
         # Retour Menu
         self.rect_menu = self.button_hover(62, 45, 100, 40, self.red1, self.white, self.yellow, self.white, "BACK TO MENU", self.font2, self.white,18, 2, 5)
+        
+        # Player info
+        self.text_not_align(self.font3, 100, self.username , self.pink, 360, 10)
 
     def game_restart(self):
         self.image_not_center("picture restart", 10, 220, 100, 170, self.img_picture_restart)
@@ -136,7 +140,6 @@ class Game(Element, Screen):
                                 self.check_bomb(row, col)
                     elif event.button == 3:
                         pass 
-                        print(self.bomb_count)
 
                     elif self.rect_menu.collidepoint(event.pos):
                             self.game_running = False

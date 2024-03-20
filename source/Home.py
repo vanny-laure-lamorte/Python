@@ -1,5 +1,7 @@
 import pygame
 import json
+
+from source.Game import Game
 from source.pygame_manager.Element import Element
 from source.pygame_manager.Screen import Screen
 
@@ -9,9 +11,13 @@ class Home (Element, Screen):
         Screen.__init__(self)
         self.input_name = "ENTER YOUR NAME"
         self.entry = False
-        # Charger les images
+
+        # Loading images
         self.background_image = pygame.image.load("assets/image/home1.png")
         self.home_image = pygame.image.load("assets/image/home2.png")
+
+        # Player info
+        self.player_info_list = []
 
     def design(self):
 
@@ -27,8 +33,8 @@ class Home (Element, Screen):
 
         # Options menu
         self.input_name_rect = self.button_hover(440, 400, 240, 50, self.yellow, self.white, self.yellow, self.white, self.input_name, self.font2, self.white, 35, 2, 5)
-        self.button_hover(440, 470, 180, 50, self.red1, self.white, self.red2, self.white, "Normal", self.font2, self.white, 35, 2, 5)
-        self.button_hover(440, 530, 180, 50, self.red1, self.white, self.red2, self.white, "Expert", self.font2, self.white, 35, 2, 5)
+        self.btn_normal = self.button_hover(440, 470, 180, 50, self.red1, self.white, self.red2, self.white, "Normal", self.font2, self.white, 35, 2, 5)
+        self.btn_expert = self.button_hover(440, 530, 180, 50, self.red1, self.white, self.red2, self.white, "Expert", self.font2, self.white, 35, 2, 5)
         self.button_hover(440, 590, 180, 50, self.red1, self.white, self.red2, self.white, "Meilleur Score", self.font2, self.white, 35, 2, 5)
 
         # Copyright
@@ -42,17 +48,24 @@ class Home (Element, Screen):
         while home_running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    home_running = False
-
-            
+                    home_running = False            
 
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if self.input_name_rect.collidepoint(event.pos):
                         self.entry = True
                         self.entry = 1
                         self.input_name = ""
+                    elif self.btn_normal.collidepoint(event.pos):
+                        g = Game((9,9), self.input_name)
+                        g.game_run()
+
+                    elif self.btn_expert.collidepoint(event.pos):
+                        g = Game((13,13), self.input_name)
+                        g.game_run()
                     else:
                         self.entry = False
+
+                    
 
                 elif event.type == pygame.KEYDOWN and self.entry:
                     if event.key == pygame.K_RETURN:
@@ -66,6 +79,7 @@ class Home (Element, Screen):
                             self.input_name += event.unicode
             self.design()
             # self.timer_game()
+            self.player_info()
             self.update()
 
     def save_player_name(self):
@@ -75,7 +89,17 @@ class Home (Element, Screen):
         except (FileNotFoundError, json.decoder.JSONDecodeError):
             data = []
 
-        data.append(self.input_name)
+        data.append((self.input_name, self.score))
 
         with open('player_name.json', 'w') as file:
             json.dump(data, file)
+
+    def player_info(self): 
+        try:
+            with open('player_name.json', 'r') as file:
+                self.player_info_list = json.load(file)
+
+        except(FileNotFoundError, json.decoder.JSONDecodeError):
+            pass
+
+
