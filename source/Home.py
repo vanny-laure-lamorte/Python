@@ -42,17 +42,6 @@ class Home (Element):
         self.text_not_align(self.font3, 15,"©", self.white, 345, 722.5)
         self.text_not_align(self.font3, 10,"Copyright 2024 | All Rights Reserved ", self.white, 360, 725)
     
-    def save_player_name(self):
-        try:
-            with open('player_name.json', 'r') as file:
-                data = json.load(file)
-        except (FileNotFoundError, json.decoder.JSONDecodeError):
-            data = []
-        data.append((self.input_name, self.score))
-
-        with open('player_name.json', 'w') as file:
-            json.dump(data, file)
-
     def player_info(self): 
         try:
             with open('player_name.json', 'r') as file:
@@ -82,6 +71,8 @@ class Home (Element):
                         else:
                             g = Game((9,9), self.input_name)
                             g.game_run()
+                            self.input_name = ""
+
 
                     elif self.btn_expert.collidepoint(event.pos):
                         if self.input_name == "" or self.input_name == "ENTER YOUR NAME":
@@ -89,6 +80,7 @@ class Home (Element):
                         else:
                             g = Game((13,13), self.input_name)
                             g.game_run()
+                            self.input_name = ""
                     else:
                         self.entry = False
 

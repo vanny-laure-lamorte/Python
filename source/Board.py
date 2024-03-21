@@ -22,10 +22,10 @@ class Board:
             row_data = []
             for col in range(self.size[0]):
                 if row * self.size[0] + col in bomb_positions:
-                    piece = True
+                    bomb = True
                 else:
-                    piece = False
-                row_data.append(piece)
+                    bomb = False
+                row_data.append(bomb)
             self.board.append(row_data)
         return str(bomb_count)
 

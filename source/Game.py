@@ -1,4 +1,4 @@
-import pygame, time
+import pygame, time, json
 
 from source.pygame_manager.Element import Element
 from source.Board import Board 
@@ -32,31 +32,41 @@ class Game(Element):
         # Loading pictures
         self.img_game_chrono = pygame.image.load('assets/image/game_chrono.png').convert_alpha()
         self.img_tom = pygame.image.load('assets/image/game_tom.png').convert_alpha()
-        # self.img_game_flag = pygame.image.load('assets/image/game_flag.png').convert_alpha()
         self.img_tile_empty = pygame.image.load('assets/image/sprite/Tile_empty.png').convert_alpha()
         self.img_tile_not_revealed = pygame.image.load('assets/image/sprite/Tile_not_revealed.png').convert_alpha()
         self.img_tile_bomb = pygame.image.load('assets/image/sprite/Tile_is_bomb.png').convert_alpha()
         self.img_picture_restart = pygame.image.load('assets/image/game_restart.png').convert_alpha()
         self.img_picture_win = pygame.image.load('assets/image/game_win.png').convert_alpha()
-        self.img_picture_lose = pygame.image.load('assets/image/game_mad.png').convert_alpha()
         self.img_tile_flagged = pygame.image.load('assets/image/sprite/Tile_flagged.png').convert_alpha()
         self.img_tile_question_mark = pygame.image.load('assets/image/sprite/Tile_question_mark.png').convert_alpha()
-        #self.img_picture_lose = pygame.image.load('assets/image/game_lose.png').convert_alpha()
+        self.img_picture_lose = pygame.image.load('assets/image/game_lose.png').convert_alpha()
         self.img_best = pygame.image.load('assets/image/game_best.png').convert_alpha()
         self.img_jerry = pygame.image.load('assets/image/icon-jerry1.png').convert_alpha()
         self.img_game_flag= pygame.image.load('assets/image/game_f.png').convert_alpha()
 
         self.current_flag_state = EMPTY
         self.flag_tile = None
-
         self.current_flag_state = EMPTY
         self.flag_tile = None
+
+        self.add_info_json = False
 
     def timer_game(self):
         self.elapsed_time = time.time() - self.start_time
         minutes = int((self.elapsed_time % 3600) // 60)
         seconds = int(self.elapsed_time % 60)
         self.formatted_time = "{:02d}:{:02d}".format(minutes, seconds)
+
+    def save_player_name(self):
+        try:
+            with open('player_name.json', 'r') as file:
+                data = json.load(file)
+        except (FileNotFoundError, json.decoder.JSONDecodeError):
+            data = []
+        data.append((self.username, self.formatted_time))
+
+        with open('player_name.json', 'w') as file:
+            json.dump(data, file)
 
     def design(self):
         # Background
@@ -74,6 +84,7 @@ class Game(Element):
 
         # Retour Menu
         self.rect_menu = self.button_hover(75, 320, 130, 40, self.orange1, self.white, self.orange1, self.white, "BACK TO MENU", self.font2, self.white,25, 2, 5)
+
 
         # Restart
         self.restart_game = self.button_hover(75, 370, 130, 40, self.orange1, self.white, self.orange1, self.white, "RESTART", self.font2, self.white, 25, 2, 5)
@@ -118,9 +129,11 @@ class Game(Element):
 
         if self.tile_is_bomb == True: 
             self.game_lose()
-            print(f"LOOSE {self.tile_count}")
         if self.remaining_tiles == 0:
             self.game_win()
+            if not self.add_info_json:
+                self.save_player_name()
+                self.add_info_json = True
 
     # Display win message
     def game_win(self): 
@@ -136,7 +149,6 @@ class Game(Element):
 
 
     def draw_board(self):
-
         # Display grid
         for row in range(self.size[1]):
             for col in range(self.size[0]):
@@ -164,7 +176,6 @@ class Game(Element):
                             break
                     if discovered:
                         self.image_not_center("tile", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50, self.img_tile_bomb)
-                        self.tile_is_bomb = True
                         
                     else:
                         self.image_not_center("tile", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50, self.img_tile_empty)
@@ -172,13 +183,8 @@ class Game(Element):
     # Check if tile is a bomb
     def check_bomb(self, row, col):
         if self.board.is_bomb_at(row, col):
-            if (row, col) not in [item[0] for item in self.discovered_tile]:
-                print("Bomb discovered at this position : ", (row, col))
-                self.discovered_tile.append(((row, col), True))
+            self.tile_is_bomb = True
         else:
-            if (row, col) not in [item[0] for item in self.discovered_tile]:
-                print("No bomb at this position : ", (row, col))
-                self.discovered_tile.append(((row, col), False))
             self.check_adjacent_tiles(row, col)
 
     def check_adjacent_tiles(self, row, col):
@@ -186,13 +192,16 @@ class Game(Element):
                         (row, col - 1),                     (row, col + 1),
                         (row + 1, col - 1), (row + 1, col), (row + 1, col + 1)]
 
+        self.discovered_tile.append(((row, col), False))
+        for r, c in adjacent_tiles:
+            if 0 <= r < self.size[1] and 0 <= c < self.size[0]:
+                if self.board.is_bomb_at(r, c) :
+                    return
         for r, c in adjacent_tiles:
             if 0 <= r < self.size[1] and 0 <= c < self.size[0]:
                 if not self.board.is_bomb_at(r, c) and ((r, c), False) not in self.discovered_tile:
-                    self.discovered_tile.append(((r, c), False))
                     self.check_adjacent_tiles(r, c)
 
-    
 
     def game_run(self):
 
@@ -214,10 +223,10 @@ class Game(Element):
                         for tile_rect, (row, col) in self.board_list:
                             if tile_rect.collidepoint(event.pos):
                                 self.check_bomb(row, col)
+
                                 if not self.timer_started:
                                     self.timer_started = True
                                     self.start_time = time.time()
-
 
                     elif event.button == 3: # Right click - Flag, question, empty tile
                         for tile_rect, (row, col) in self.board_list:
