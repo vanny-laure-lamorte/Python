@@ -126,6 +126,7 @@ class Game(Element):
 
         # Red tiles
         self.remaining_tiles = self.tile_count - len(self.discovered_tile)
+        print (self.discovered_tile)
         self. rect_full(self.white, 890, 460, 80, 90, 5)
         self.rect_border(self.orange1, 890, 460, 80, 90, 3, 5)
         self.image_not_center("tile", 868, 425, 40, 40, self.img_tile_not_revealed)
@@ -200,16 +201,19 @@ class Game(Element):
     # Check if tile is a bomb
     def check_bomb(self, row, col):
         if self.board.is_bomb_at(row, col):
+            if (row, col) not in [item[0] for item in self.discovered_tile]:
+                self.discovered_tile.append(((row, col), True))
             self.tile_is_bomb = True
         else:
             self.check_adjacent_tiles(row, col)
-
+    
     def check_adjacent_tiles(self, row, col):
         adjacent_tiles = [(row - 1, col - 1), (row - 1, col), (row - 1, col + 1),
                         (row, col - 1),                     (row, col + 1),
                         (row + 1, col - 1), (row + 1, col), (row + 1, col + 1)]
-
-        self.discovered_tile.append(((row, col), False))
+        
+        if (row, col) not in [item[0] for item in self.discovered_tile]:
+            self.discovered_tile.append(((row, col), False))
         for r, c in adjacent_tiles:
             if 0 <= r < self.size[1] and 0 <= c < self.size[0]:
                 if self.board.is_bomb_at(r, c):
