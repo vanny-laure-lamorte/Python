@@ -1,22 +1,24 @@
 import pygame
 from source.pygame_manager.Screen import Screen
-
 class Element(Screen):
     def __init__(self):
         Screen.__init__(self)
 
-        # Color
-        self.black = (0, 0, 0) 
+        self.red = (255,0,0) 
         self.red1 = (161,15,15) # Mines weeper - menu option
         self.red2 = (199,28,21) # Mines weeper - menu option
         self.white = (255, 255, 255) # Mines weeper - name game
         self.yellow = (233, 164, 41)  # Mines weeper - menu option
+        self.black = (0,0,0)
         self.orange = (220, 130, 77) # Mines weeper 
-      
+        self.orange1 = (231, 63, 19)  # Mines weeper - menu game details
+        self.green = (36, 104, 42) # Mines weeper - win
+
         # Font   
         self.font1 = "assets/font/MickeyMouseLine_PERSONAL_USE_ONLY.otf" # Mines weeper - home
         self.font2 = "assets/font/Sunny Spells Basic.ttf" # Mines weeper - home
         self.font3 = "assets/font/Roboto-Medium.ttf" # Mines weeper - copyright
+        self.font4 = "assets/font/Roboto-BoldCondensedItalic.ttf" # Mines weeper - copyright
 
         # Image
         
@@ -93,6 +95,23 @@ class Element(Screen):
         button = pygame.draw.rect(self.Window, color, pygame.Rect(x - width //2, y - height //2, width, height),False ,0,0,0, radius, radius)
         return button
 
+# Def Circle
+    def circle(self, color, x, y, radius):
+        pygame.draw.circle(self.Window, color, (x,y), radius)
+
+    def circle_alpha(self, alpha_color, x, y, radius):
+        circle_surface = pygame.Surface((self.W,self.H), pygame.SRCALPHA)
+        pygame.draw.circle(circle_surface,alpha_color,(x,y),radius)
+        self.Window.blit(circle_surface, (0,0))
+
+    def circle_hover(self, name, color,alpha_color, x, y, radius): 
+        name = pygame.draw.circle(self.Window, color, (x,y), radius)
+
+        if self.is_mouse_over_button(name):
+            self.circle_alpha(alpha_color, x, y, radius)
+        else:
+            self.circle(color, x, y, radius)
+
 # Def Hover
     def is_mouse_over_button(self, button_rect):
         mouse_pos = pygame.mouse.get_pos()
@@ -112,3 +131,9 @@ class Element(Screen):
         self.text_center(font, text_size, text, text_color,  x, y)
 
         return button    
+# Def Cursor 
+    def normal_cursor(self):
+        pygame.mouse.set_cursor(pygame.cursors.arrow)
+
+    def hand_cursor(self):
+        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
