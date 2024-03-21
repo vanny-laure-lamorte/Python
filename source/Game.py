@@ -18,12 +18,16 @@ class Game(Element):
         self.game_running = True
         self.bomb_count = self.board.is_bomb()
         self.username = username
-        self.tile_count = int(self.size[0]*self.size[1])
+        self.tile_count = int(self.size[0]*self.size[1]) - int(self.bomb_count)
+        print(self.tile_count)
         self.discovered_tile = []
 
         # Timer
         self.timer_started = False
-        self.formatted_time = "00:00"       
+        self.formatted_time = "00:00"  
+
+        # Bomb 
+        self.tile_is_bomb = False     
 
         # Loading pictures
         self.img_game_chrono = pygame.image.load('assets/image/game_chrono.png').convert_alpha()
@@ -105,13 +109,18 @@ class Game(Element):
         self.text_not_align(self.font3, 15, "77", self.black, 880, 383)
      
         # Red tiles
-        remaining_tiles = self.tile_count - len(self.discovered_tile)
-        print( self.discovered_tile)
+        self.remaining_tiles = self.tile_count - len(self.discovered_tile)
         self. rect_full(self.white, 890, 460, 80, 90, 5)
         self.rect_border(self.orange1, 890, 460, 80, 90, 3, 5)
         self.image_not_center("tile", 868, 425, 40, 40, self.img_tile_not_revealed)
         self.text_not_align(self.font3, 12, "X", self.black, 865, 485)
-        self.text_not_align(self.font3, 15, str(remaining_tiles), self.black, 880, 483)
+        self.text_not_align(self.font3, 15, str(self.remaining_tiles), self.black, 880, 483)
+
+        if self.tile_is_bomb == True: 
+            self.game_lose()
+            print(f"LOOSE {self.tile_count}")
+        if self.remaining_tiles == 0:
+            self.game_win()
 
     # Display win message
     def game_win(self): 
@@ -124,6 +133,7 @@ class Game(Element):
         self.text_not_align(self.font2, 20, "You Lose...", self.red, 15, 225)
         self.text_not_align(self.font2, 20, "No Cheese Caught ", self.red, 15, 250)
         self.image_not_center("picture loose", 10, 120, 100, 100, self.img_picture_lose)
+
 
     def draw_board(self):
 
@@ -144,6 +154,7 @@ class Game(Element):
                             self.image_not_center("tile", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50, self.img_tile_flagged)
                         elif self.current_flag_state == QUESTION_MARK:
                             self.image_not_center("tile", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50, self.img_tile_question_mark)
+
                 # Display empty tile or bomb
                 else: 
                     discovered = False
@@ -153,6 +164,8 @@ class Game(Element):
                             break
                     if discovered:
                         self.image_not_center("tile", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50, self.img_tile_bomb)
+                        self.tile_is_bomb = True
+                        
                     else:
                         self.image_not_center("tile", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50, self.img_tile_empty)
 
@@ -160,11 +173,11 @@ class Game(Element):
     def check_bomb(self, row, col):
         if self.board.is_bomb_at(row, col):
             if (row, col) not in [item[0] for item in self.discovered_tile]:
-                print("Bombe trouvée à la position", (row, col))
+                print("Bomb discovered at this position : ", (row, col))
                 self.discovered_tile.append(((row, col), True))
         else:
             if (row, col) not in [item[0] for item in self.discovered_tile]:
-                print("Pas de bombe à la position", (row, col))
+                print("No bomb at this position : ", (row, col))
                 self.discovered_tile.append(((row, col), False))
             self.check_adjacent_tiles(row, col)
 
@@ -178,6 +191,8 @@ class Game(Element):
                 if not self.board.is_bomb_at(r, c) and ((r, c), False) not in self.discovered_tile:
                     self.discovered_tile.append(((r, c), False))
                     self.check_adjacent_tiles(r, c)
+
+    
 
     def game_run(self):
 
@@ -225,5 +240,4 @@ class Game(Element):
 
             self.design()
             self.draw_board()
-            self.game_lose()
             self.update()
