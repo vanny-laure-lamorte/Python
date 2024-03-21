@@ -76,12 +76,13 @@ class Home (Element):
                     elif self.btn_normal.collidepoint(event.pos):
                         if self.input_name == "" or self.input_name == "ENTER YOUR NAME":
                             self.error_message = True
+                            self.error_length = False
+
                       
                         else:
                             g = Game((9,9), self.input_name)
                             g.game_run()
                             self.input_name = ""
-
 
                     elif self.btn_expert.collidepoint(event.pos):
                         if self.input_name == "" or self.input_name == "ENTER YOUR NAME":
@@ -109,10 +110,6 @@ class Home (Element):
 
                         else:
                             self.error_length = True
-
-
-                        
-
 
             self.design()
             self.player_info()
