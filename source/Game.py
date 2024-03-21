@@ -1,4 +1,5 @@
 import pygame, time
+
 from source.pygame_manager.Element import Element
 from source.Board import Board
 
@@ -174,7 +175,8 @@ class Game(Element):
     # Check if tile is a bomb
     def check_bomb(self, row, col):
         if self.board.is_bomb_at(row, col):
-            print("Game Over")
+            if (row, col) not in [item[0] for item in self.discovered_tile]:
+                self.discovered_tile.append(((row, col), True))
         else:
             self.check_adjacent_tiles(row, col)
 
