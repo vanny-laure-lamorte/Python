@@ -4,7 +4,7 @@ class Board:
         self.board = []
         self.size = size
         self.max_tile = self.size[0] * self.size[1]
-    
+
     def bomb_number(self):
         if self.max_tile < 100:
             return random.randint(8, 12)
@@ -31,3 +31,4 @@ class Board:
 
     def is_bomb_at(self, row, col):
         return self.board[row][col]
+
