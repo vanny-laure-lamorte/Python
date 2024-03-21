@@ -16,18 +16,16 @@ class Game(Element):
         self.size = size
         self.board_list = []
         self.game_running = True
+        self.game_finished = False
         self.flag_count = 0
         self.bomb_count = self.board.is_bomb()
         self.username = username
         self.tile_count = int(self.size[0]*self.size[1]) - int(self.bomb_count)
-        print(self.tile_count)
         self.discovered_tile = []
         self.tile_states = {}
         self.current_flag_state = EMPTY
         self.flag_tile = None
         self.selected_tile = None
-        self.bomb_count_final = 0
-
 
         # Timer
         self.timer_started = False
@@ -35,6 +33,7 @@ class Game(Element):
 
         # Bomb 
         self.tile_is_bomb = False     
+        self.bomb_count_final = 0
 
         # Loading pictures
         self.img_game_chrono = pygame.image.load('assets/image/game_chrono.png').convert_alpha()
@@ -126,7 +125,6 @@ class Game(Element):
 
         # Red tiles
         self.remaining_tiles = self.tile_count - len(self.discovered_tile)
-        print (self.discovered_tile)
         self. rect_full(self.white, 890, 460, 80, 90, 5)
         self.rect_border(self.orange1, 890, 460, 80, 90, 3, 5)
         self.image_not_center("tile", 868, 425, 40, 40, self.img_tile_not_revealed)
@@ -135,11 +133,13 @@ class Game(Element):
 
         if self.tile_is_bomb == True: 
             self.game_lose()
+            self.game_finished = True
         if self.remaining_tiles == 0:
             self.game_win()
             if not self.add_info_json:
                 self.save_player_name()
                 self.add_info_json = True
+                self.game_finished = True
 
     # Display win message
     def game_win(self):
@@ -239,7 +239,7 @@ class Game(Element):
                     elif self.restart_game.collidepoint(event.pos):
                         self.__init__(self.size, self.username)
 
-                    elif event.button == 1:  # Left click
+                    elif event.button == 1 and not self.game_finished:  # Left click
 
                         for tile_rect, (row, col) in self.board_list:
                             if tile_rect.collidepoint(event.pos):
@@ -249,7 +249,7 @@ class Game(Element):
                                     self.timer_started = True
                                     self.start_time = time.time()
 
-                    elif event.button == 3: # Right click - Flag, question, empty tile
+                    elif event.button == 3 and not self.game_finished: # Right click - Flag, question, empty tile
                         for tile_rect, (row, col) in self.board_list:
                             if tile_rect.collidepoint(event.pos) and (row, col) not in [item[0] for item in self.discovered_tile]:
                                 current_state = self.tile_states.get((row, col), EMPTY)
