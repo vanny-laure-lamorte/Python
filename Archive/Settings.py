@@ -1,6 +1,6 @@
 import pygame
 from os import walk
-from source.Board_test import set_up
+from Archive.Board_test import set_up
 
 row_num = 9
 col_num = 29
@@ -23,5 +23,3 @@ for _, __, img_files in walk(path):
         img = pygame.image.load(full_path)
         img = pygame.transform.scale(img, (tile_size, tile_size))
         images[image.split(".")[0]] = img
-
-print(field)
