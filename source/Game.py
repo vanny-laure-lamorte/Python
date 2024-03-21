@@ -1,5 +1,4 @@
 import pygame, time
-
 from source.pygame_manager.Element import Element
 from source.Board import Board
 
@@ -110,7 +109,6 @@ class Game(Element):
 
         # Red tiles
         remaining_tiles = self.tile_count - len(self.discovered_tile)
-        print( self.discovered_tile)
         self. rect_full(self.white, 890, 460, 80, 90, 5)
         self.rect_border(self.orange1, 890, 460, 80, 90, 3, 5)
         self.image_not_center("tile", 868, 425, 40, 40, self.img_tile_not_revealed)
@@ -165,10 +163,10 @@ class Game(Element):
                     else:
                         self.image_not_center("tile", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50, self.img_tile_empty)
                         bomb_count = 0
-                        for r_off in range(-1, 2):
-                            for c_off in range(-1, 2):
-                                if (r_off != 0 or c_off != 0) and 0 <= row + r_off < self.size[1] and 0 <= col + c_off < self.size[0]:
-                                    if self.board.is_bomb_at(row + r_off, col + c_off):
+                        for r in range(-1, 2):
+                            for c in range(-1, 2):
+                                if (r != 0 or c != 0) and 0 <= row + r < self.size[1] and 0 <= col + c < self.size[0]:
+                                    if self.board.is_bomb_at(row + r, col + c):
                                         bomb_count += 1
                         if bomb_count > 0:
                             self.text_not_align(self.font3, 15, str(bomb_count), self.black, self.W // 2 - (self.size[0] * 50 // 2) + x + 25, self.H // 2 - (self.size[1] * 50 // 2) + y + 20)
@@ -176,13 +174,8 @@ class Game(Element):
     # Check if tile is a bomb
     def check_bomb(self, row, col):
         if self.board.is_bomb_at(row, col):
-            if (row, col) not in [item[0] for item in self.discovered_tile]:
-                print("Bombe trouvée à la position", (row, col))
-                self.discovered_tile.append(((row, col), True))
+            print("Game Over")
         else:
-            if (row, col) not in [item[0] for item in self.discovered_tile]:
-                print("Pas de bombe à la position", (row, col))
-                self.discovered_tile.append(((row, col), False))
             self.check_adjacent_tiles(row, col)
 
     def check_adjacent_tiles(self, row, col):
@@ -190,10 +183,14 @@ class Game(Element):
                         (row, col - 1),                     (row, col + 1),
                         (row + 1, col - 1), (row + 1, col), (row + 1, col + 1)]
 
+        self.discovered_tile.append(((row, col), False))
+        for r, c in adjacent_tiles:
+            if 0 <= r < self.size[1] and 0 <= c < self.size[0]:
+                if self.board.is_bomb_at(r, c):
+                    return
         for r, c in adjacent_tiles:
             if 0 <= r < self.size[1] and 0 <= c < self.size[0]:
                 if not self.board.is_bomb_at(r, c) and ((r, c), False) not in self.discovered_tile:
-                    self.discovered_tile.append(((r, c), False))
                     self.check_adjacent_tiles(r, c)
 
     def game_run(self):
