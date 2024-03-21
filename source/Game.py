@@ -10,11 +10,11 @@ class Game(Element):
         self.size = size
         self.board_list = []
         self.game_running = True
-        self.discovered_tile = []
         self.bomb_count = self.board.is_bomb()
         self.username = username
         self.tile_count = int(self.size[0]*self.size[1])
-        
+        self.discovered_tile = []
+
         # Timer
         self.timer_started = False
         self.formatted_time = "00:00"       
@@ -111,7 +111,7 @@ class Game(Element):
     def draw_board(self):
 
         # Display grid
-        self.board_list = []
+        # self.board_list = []
         for row in range(self.size[1]):
             for col in range(self.size[0]):
                 x = col * 51
@@ -144,7 +144,19 @@ class Game(Element):
         else:
             print("Pas de bombe à la position", (row, col))
             self.discovered_tile.append(((row, col), False))
+            self.check_adjacent_tiles(row, col)
 
+    def check_adjacent_tiles(self, row, col):
+        adjacent_tiles = [(row - 1, col - 1), (row - 1, col), (row - 1, col + 1),
+                        (row, col - 1),                     (row, col + 1),
+                        (row + 1, col - 1), (row + 1, col), (row + 1, col + 1)]
+
+        for r, c in adjacent_tiles:
+            if 0 <= r < self.size[1] and 0 <= c < self.size[0]:
+                if not self.board.is_bomb_at(r, c) and ((r, c), False) not in self.discovered_tile:
+                    self.discovered_tile.append(((r, c), False))
+                    self.check_adjacent_tiles(r, c)
+                        
     def game_run(self):
 
         while self.game_running:
