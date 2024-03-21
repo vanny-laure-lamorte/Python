@@ -1,27 +1,34 @@
 import pygame, time
 
 from source.pygame_manager.Element import Element
-from source.Board import Board 
+from source.Board import Board
 
 FLAG = 1
 QUESTION_MARK = 2
 EMPTY = 0
 
-class Game(Element): 
+class Game(Element):
     def __init__(self, size, username):
         self.board = Board(size)
         Element.__init__(self)
         self.size = size
         self.board_list = []
         self.game_running = True
+        self.flag_count = 0
         self.bomb_count = self.board.is_bomb()
         self.username = username
         self.tile_count = int(self.size[0]*self.size[1])
         self.discovered_tile = []
+        self.tile_states = {}
+        self.current_flag_state = EMPTY
+        self.flag_tile = None
+        self.selected_tile = None
+        self.bomb_count_final = 0
+
 
         # Timer
         self.timer_started = False
-        self.formatted_time = "00:00"       
+        self.formatted_time = "00:00"
 
         # Loading pictures
         self.img_game_chrono = pygame.image.load('assets/image/game_chrono.png').convert_alpha()
@@ -39,8 +46,6 @@ class Game(Element):
         self.img_best = pygame.image.load('assets/image/game_best.png').convert_alpha()
         self.img_jerry = pygame.image.load('assets/image/icon-jerry1.png').convert_alpha()
 
-        self.current_flag_state = EMPTY
-        self.flag_tile = None
 
     def timer_game(self):
         self.elapsed_time = time.time() - self.start_time
@@ -51,6 +56,9 @@ class Game(Element):
     def design(self):
         # Background
         self.screen_color(self.orange)
+
+        # Final bomb count
+        self.bomb_count_final = int(self.bomb_count) - self.flag_count
 
         # Title
         self.text_not_align(self.font1, 30,"Mines Weeper ", self.white, 8, 10)
@@ -78,7 +86,7 @@ class Game(Element):
         self.text_not_align(self.font2, 40,"02:14", self.white, 45, 525)
         self.text_not_align(self.font2, 20,"by Lucy Madec", self.white, 25, 560)
 
-        # Timer        
+        # Timer
         self. rect_full(self.white, 890, 160, 80, 90, 5)
         self.rect_border(self.orange1, 890, 160, 80, 90, 3, 5)
         self.image_not_center("game_chrono", 855, 115, 70, 70, self.img_game_chrono)
@@ -89,15 +97,15 @@ class Game(Element):
         self.rect_border(self.orange1, 890, 260, 80, 90, 3, 5)
         self.image_not_center("tom", 855, 215, 70, 70, self.img_tom)
         self.text_not_align(self.font3, 12, "X", self.black, 865, 285)
-        self.text_not_align(self.font3, 15, self.bomb_count, self.black, 880, 283)
+        self.text_not_align(self.font3, 15, str(self.bomb_count_final), self.black, 880, 283)
 
         # Red flag
         self. rect_full(self.white, 890, 360, 80, 90, 5)
         self.rect_border(self.orange1, 890, 360, 80, 90, 3, 5)
         self.image_not_center("game_flag", 860, 320, 55, 55, self.img_game_flag)
         self.text_not_align(self.font3, 12, "X", self.black, 865, 385)
-        self.text_not_align(self.font3, 15, "77", self.black, 880, 383)
-     
+        self.text_not_align(self.font3, 15, str(self.flag_count), self.black, 880, 383)
+
         # Red tiles
         remaining_tiles = self.tile_count - len(self.discovered_tile)
         self. rect_full(self.white, 890, 460, 80, 90, 5)
@@ -107,13 +115,13 @@ class Game(Element):
         self.text_not_align(self.font3, 15, str(remaining_tiles), self.black, 880, 483)
 
     # Display win message
-    def game_win(self): 
+    def game_win(self):
         self.text_not_align(self.font2, 20, "You Just Won", self.green, 15, 225)
         self.text_not_align(self.font2, 20, "The Cheese ! ", self.green, 15, 250)
         self.image_not_center("picture win", 10, 120, 100, 100, self.img_picture_win)
 
     # Display lose message
-    def game_lose(self): 
+    def game_lose(self):
         self.text_not_align(self.font2, 20, "You Lose...", self.red, 15, 225)
         self.text_not_align(self.font2, 20, "No Cheese Caught ", self.red, 15, 250)
         self.image_not_center("picture win", 10, 120, 100, 100, self.img_picture_lose)
@@ -121,7 +129,6 @@ class Game(Element):
     def draw_board(self):
 
         # Display grid
-        # self.board_list = []
         for row in range(self.size[1]):
             for col in range(self.size[0]):
                 x = col * 51
@@ -133,13 +140,18 @@ class Game(Element):
                     self.board_list.append((tile_rect, (row, col)))
                     self.image_not_center("tile", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50, self.img_tile_not_revealed)
 
-                    if self.flag_tile == (row, col):
-                        if self.current_flag_state == FLAG:
-                            self.image_not_center("tile", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50, self.img_tile_flagged)
-                        elif self.current_flag_state == QUESTION_MARK:
-                            self.image_not_center("tile", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50, self.img_tile_question_mark)
+                    # Tile state
+                    tile_state = self.tile_states.get((row, col), EMPTY)
+                    # Display Flag or Question mark
+                    if tile_state == FLAG:
+                        self.image_not_center("tile", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50, self.img_tile_flagged)
+                    elif tile_state == QUESTION_MARK:
+                        self.image_not_center("tile", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50, self.img_tile_question_mark)
+                    else:
+                        self.image_not_center("tile", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50, self.img_tile_not_revealed)
+
                 # Display empty tile or bomb
-                else: 
+                else:
                     discovered = False
                     for tile in self.discovered_tile:
                         if tile[0] == (row, col):
@@ -189,23 +201,31 @@ class Game(Element):
                     elif event.button == 1:  # Left click
                         for tile_rect, (row, col) in self.board_list:
                             if tile_rect.collidepoint(event.pos):
-                                self.check_bomb(row, col)
                                 if not self.timer_started:
                                     self.timer_started = True
                                     self.start_time = time.time()
 
+                                if ((row, col) not in [item[0] for item in self.discovered_tile] and self.tile_states.get((row, col), EMPTY) != FLAG and self.tile_states.get((row, col), EMPTY) != QUESTION_MARK):
+                                    self.check_bomb(row, col)
+                                break
+
                     elif event.button == 3: # Right click - Flag, question, empty tile
                         for tile_rect, (row, col) in self.board_list:
                             if tile_rect.collidepoint(event.pos) and (row, col) not in [item[0] for item in self.discovered_tile]:
-                                if self.current_flag_state == EMPTY:
-                                    self.current_flag_state = FLAG
-                                elif self.current_flag_state == FLAG:
-                                    self.current_flag_state = QUESTION_MARK
+                                current_state = self.tile_states.get((row, col), EMPTY)
+                                if current_state == EMPTY:
+                                    self.tile_states[(row, col)] = FLAG
+                                    self.flag_count += 1
+                                elif current_state == FLAG:
+                                    if self.flag_count > 0:
+                                        self.tile_states[(row, col)] = QUESTION_MARK
+                                        self.flag_count -= 1
                                 else:
-                                    self.current_flag_state = EMPTY
+                                    self.tile_states[(row, col)] = EMPTY
 
-                                self.flag_tile = (row, col)
+                                self.selected_tile = (row, col)
                                 break
+
                     elif self.rect_menu.collidepoint(event.pos):
                             self.game_running = False
 
