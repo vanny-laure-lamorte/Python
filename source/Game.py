@@ -66,7 +66,7 @@ class Game(Element):
         self.rect_menu = self.button_hover(75, 320, 130, 40, self.orange1, self.white, self.orange1, self.white, "BACK TO MENU", self.font2, self.white,25, 2, 5)
 
         # Restart
-        self.button_hover(75, 370, 130, 40, self.orange1, self.white, self.orange1, self.white, "RESTART", self.font2, self.white, 25, 2, 5)
+        self.restart_game = self.button_hover(75, 370, 130, 40, self.orange1, self.white, self.orange1, self.white, "RESTART", self.font2, self.white, 25, 2, 5)
 
         # Best time
         self.rect_full(self.orange1, 75, 505, 130, 200, 5)
@@ -182,6 +182,9 @@ class Game(Element):
 
                     if self.rect_menu.collidepoint(event.pos):
                         self.game_running = False
+
+                    elif self.restart_game.collidepoint(event.pos):
+                        self.__init__(self.size, self.username)
 
                     elif event.button == 1:  # Left click
                         for tile_rect, (row, col) in self.board_list:
