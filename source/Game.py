@@ -81,6 +81,8 @@ class Game(Element, Screen):
         self.image_not_center("Winner", 20, 430, 40, 40, self.img_best)
 
         self.text_not_align(self.font2, 40,"02:14", self.white, 45, 525)
+        self.text_not_align(self.font2, 20,"by Lucy Madec", self.white, 25, 560)
+
 
 
         # Timer        
@@ -177,6 +179,6 @@ class Game(Element, Screen):
             self.timer_game()
             self.design()
             self.draw_board()
-            # self.game_win()
-            self.game_lose()
+            self.game_win()
+            # self.game_lose()
             self.update()
