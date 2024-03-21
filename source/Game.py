@@ -32,7 +32,9 @@ class Game(Element, Screen):
         self.img_tile_bomb = pygame.image.load('assets/image/sprite/Tile_is_bomb.png').convert_alpha()
         self.img_picture_restart = pygame.image.load('assets/image/game_restart.png').convert_alpha()
         self.img_picture_win = pygame.image.load('assets/image/game_win.png').convert_alpha()
-        self.img_picture_lose = pygame.image.load('assets/image/game_mad.png').convert_alpha()
+        self.img_picture_lose = pygame.image.load('assets/image/game_lose.png').convert_alpha()
+        self.img_best = pygame.image.load('assets/image/game_best.png').convert_alpha()
+        self.img_jerry = pygame.image.load('assets/image/icon-jerry1.png').convert_alpha()
 
     def timer_game(self):
         self.elapsed_time = time.time() - self.start_time
@@ -59,16 +61,26 @@ class Game(Element, Screen):
         self.text_not_align(self.font1, 30,"Mines Weeper ", self.white, 8, 10)
         self.text_not_align(self.font1, 18,"— by L M, H N & VL", self.white, 10, 38)
 
+        # Logo Jerry
+        self.image_not_center("picture win", 855, 25, 80, 80, self.img_jerry)
+
         # Display player name
         self.text_center(self.font2, 30, f"DONT GET CAUGHT BY THE CAT {self.username} !", self.white, 460, 30)
 
         # Retour Menu
-        self.rect_menu = self.button_hover(75, 150, 130, 40, self.orange1, self.white, self.orange1, self.white, "BACK TO MENU", self.font2, self.white,25, 2, 5)
+        self.rect_menu = self.button_hover(75, 320, 130, 40, self.orange1, self.white, self.orange1, self.white, "BACK TO MENU", self.font2, self.white,25, 2, 5)
 
         # Restart
-        self.button_hover(75, 200, 130, 40, self.orange1, self.white, self.orange1, self.white, "RESTART", self.font2, self.white, 25, 2, 5)
+        self.button_hover(75, 370, 130, 40, self.orange1, self.white, self.orange1, self.white, "RESTART", self.font2, self.white, 25, 2, 5)
 
         # Best time
+        self.rect_full(self.orange1, 75, 505, 130, 200, 5)
+        self.rect_border(self.white, 75, 505, 130, 200, 3, 5)
+        self.text_not_align(self.font2, 25,"Best", self.white, 65, 450)
+        self.text_not_align(self.font2, 25," Player Time ", self.white, 25, 475)
+        self.image_not_center("Winner", 20, 430, 40, 40, self.img_best)
+
+        self.text_not_align(self.font2, 40,"02:14", self.white, 45, 525)
 
 
         # Timer        
@@ -92,7 +104,6 @@ class Game(Element, Screen):
         self.text_not_align(self.font3, 15, "77", self.black, 880, 383)
      
         # Red tiles
-
         remaining_tiles = self.tile_count - len(self.discovered_tile)
 
         self. rect_full(self.white, 890, 460, 80, 90, 5)
@@ -101,13 +112,17 @@ class Game(Element, Screen):
         self.text_not_align(self.font3, 12, "X", self.black, 865, 485)
         self.text_not_align(self.font3, 15, str(remaining_tiles), self.black, 880, 483)
 
-
-
     def game_win(self): 
-        self.image_not_center("picture win", 10, 200, 100, 200, self.img_picture_win)
+        self.text_not_align(self.font2, 20, "You Just Won", self.green, 15, 225)
+        self.text_not_align(self.font2, 20, "The Cheese ! ", self.green, 15, 250)
+        self.image_not_center("picture win", 10, 120, 100, 100, self.img_picture_win)
+
 
     def game_lose(self): 
-        self.image_not_center("picture lose", 15, 220, 100, 180, self.img_picture_lose)
+        self.text_not_align(self.font2, 20, "You Lose...", self.red, 15, 225)
+        self.text_not_align(self.font2, 20, "No Cheese Caught ", self.red, 15, 250)
+        self.image_not_center("picture win", 10, 120, 100, 100, self.img_picture_lose)
+
 
     def draw_board(self):
         self.board_list = []

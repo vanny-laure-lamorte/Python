@@ -13,6 +13,7 @@ class Element(Screen):
         self.orange1 = (231, 63, 19)  # Mines weeper - menu game details
 
         self.orange = (220, 130, 77) # Mines weeper 
+        self.green = (36, 104, 2) # Mines weeper - win
 
         # Color not used
         self.black = (0, 0, 0) 
@@ -46,7 +47,6 @@ class Element(Screen):
         self.pink = (222, 50, 79)
         self.pink1 = (254, 0, 135)      
 
-        self.green = (66, 183, 42)
         self.green2 = (39, 78, 19)
         self.darkgreen = (97, 155, 138)
         self.purple1 = (202, 8, 255)
@@ -69,10 +69,6 @@ class Element(Screen):
         self.font2 = "assets/font/Sunny Spells Basic.ttf" # Mines weeper - home
         self.font3 = "assets/font/Roboto-Medium.ttf" # Mines weeper - copyright
         self.font4 = "assets/font/Roboto-BoldCondensedItalic.ttf" # Mines weeper - copyright
-
-        # self.font4 = "assets/font/gg sans Semibold.ttf"
-        # self.font5 = "assets/font/gg sans Bold.ttf"
-
 
         # Image
         

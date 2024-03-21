@@ -41,6 +41,8 @@ class Home (Element, Screen):
         # Image
         self.image_not_center("home2", 250, 20, 375, 400, self.home_image)
 
+   
+
         # Title
         self.text_not_align(self.font1, 50,"Mines Weeper ", self.white, 320, 280)
         self.text_not_align(self.font1, 30,"— TOM & JERRY Version", self.white, 320, 320)
