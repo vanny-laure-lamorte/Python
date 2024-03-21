@@ -9,59 +9,10 @@ class Element(Screen):
         self.red2 = (199,28,21) # Mines weeper - menu option
         self.white = (255, 255, 255) # Mines weeper - name game
         self.yellow = (233, 164, 41)  # Mines weeper - menu option
-        self.orange1 = (231, 63, 19)  # Mines weeper - menu game details
-
+        self.black = (0,0,0)
         self.orange = (220, 130, 77) # Mines weeper 
-        self.green = (36, 104, 2) # Mines weeper - win
-
-        # Color not used
-        self.black = (0, 0, 0) 
-    
-        self.darkgrey = (100,100,100)
-        self.grey = (250, 250, 250)
-        self.grey1 = (240, 242, 245)   
-        self.grey2 = (53, 53, 53)
-        self.grey3 = (25, 25, 25)
-        self.grey4 = (146, 151, 153)
-        self.grey5 = (34, 31, 37)
-        self.grey6 = (176, 186, 181)
-        self.grey7 = (30, 33, 35)
-        self.grey8 = (51, 55, 62)
-        self.grey9 = (17, 18, 20)
-        self.grey10 = (29,30,33)
-        self.grey11 = (155,155,155)
-        self.dark_grey = (34, 31, 37)
-        self.dark_green = (43, 147, 72)
-        self.blue = (0, 151, 254)
-        self.blue1 = (0, 140, 234)  
-        self.blue2 = (33, 6, 84)
-        self.blue3 = (27, 38, 59)
-        self.blue4 = (20, 236, 232)
-        self.darkblue = (65, 90, 119) 
-        self.lightblue = (189, 224, 254)
-        self.alpha_white =(150,150,150, 200)
-        self.alpha_grey =(50,50,50,100)
-        self.alpha_grey2 =(50,50,50,200)
-        self.alpha_none =(0,0,0,0)
-        self.pink = (222, 50, 79)
-        self.pink1 = (254, 0, 135)      
-
-        self.green2 = (39, 78, 19)
-        self.darkgreen = (97, 155, 138)
-        self.purple1 = (202, 8, 255)
-        self.purple2 = (125, 85, 196)
-        self.purple3 = (60, 9, 108)
-        self.purple4 = (67, 47, 104)
-        self.dark_purple = (67, 47, 104)
-        self.darkgreenblue = (37, 50, 55)
-        self.greyblue = (92, 103, 125)
-        self.darkbluesea = (0, 40, 85)
-        self.lightbluesea = (39, 76, 119)
-        self.yellow = (233, 164, 41)   
-        self.lightyellow = (244, 226, 133)
-        self.orange2 = (255, 103, 2) 
-        self.darkred = (221, 45, 74)
-        self.brown = (75, 67, 67)
+        self.orange1 = (231, 63, 19)  # Mines weeper - menu game details
+        self.green = (36, 104, 42) # Mines weeper - win
 
         # Font   
         self.font1 = "assets/font/MickeyMouseLine_PERSONAL_USE_ONLY.otf" # Mines weeper - home
