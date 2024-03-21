@@ -93,6 +93,7 @@ class Home (Element):
                         self.entry = False
 
                 elif event.type == pygame.KEYDOWN and self.entry:
+                    
                     if event.key == pygame.K_RETURN:
                         if self.input_name:
                             self.save_player_name()

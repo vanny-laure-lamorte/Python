@@ -11,6 +11,8 @@ class Game(Element):
     def __init__(self, size, username):
         self.board = Board(size)
         Element.__init__(self)
+
+        # Bomb
         self.size = size
         self.board_list = []
         self.game_running = True
@@ -33,7 +35,7 @@ class Game(Element):
         # Loading pictures
         self.img_game_chrono = pygame.image.load('assets/image/game_chrono.png').convert_alpha()
         self.img_tom = pygame.image.load('assets/image/game_tom.png').convert_alpha()
-        self.img_game_flag = pygame.image.load('assets/image/game_flag.png').convert_alpha()
+        # self.img_game_flag = pygame.image.load('assets/image/game_flag.png').convert_alpha()
         self.img_tile_empty = pygame.image.load('assets/image/sprite/Tile_empty.png').convert_alpha()
         self.img_tile_not_revealed = pygame.image.load('assets/image/sprite/Tile_not_revealed.png').convert_alpha()
         self.img_tile_bomb = pygame.image.load('assets/image/sprite/Tile_is_bomb.png').convert_alpha()
@@ -45,7 +47,7 @@ class Game(Element):
         #self.img_picture_lose = pygame.image.load('assets/image/game_lose.png').convert_alpha()
         self.img_best = pygame.image.load('assets/image/game_best.png').convert_alpha()
         self.img_jerry = pygame.image.load('assets/image/icon-jerry1.png').convert_alpha()
-
+        self.img_game_flag= pygame.image.load('assets/image/game_f.png').convert_alpha()
 
     def timer_game(self):
         self.elapsed_time = time.time() - self.start_time
@@ -108,6 +110,7 @@ class Game(Element):
 
         # Red tiles
         remaining_tiles = self.tile_count - len(self.discovered_tile)
+        print( self.discovered_tile)
         self. rect_full(self.white, 890, 460, 80, 90, 5)
         self.rect_border(self.orange1, 890, 460, 80, 90, 3, 5)
         self.image_not_center("tile", 868, 425, 40, 40, self.img_tile_not_revealed)
@@ -124,7 +127,7 @@ class Game(Element):
     def game_lose(self):
         self.text_not_align(self.font2, 20, "You Lose...", self.red, 15, 225)
         self.text_not_align(self.font2, 20, "No Cheese Caught ", self.red, 15, 250)
-        self.image_not_center("picture win", 10, 120, 100, 100, self.img_picture_lose)
+        self.image_not_center("picture loose", 10, 120, 100, 100, self.img_picture_lose)
 
     def draw_board(self):
 
@@ -161,15 +164,25 @@ class Game(Element):
                         self.image_not_center("tile", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50, self.img_tile_bomb)
                     else:
                         self.image_not_center("tile", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50, self.img_tile_empty)
+                        bomb_count = 0
+                        for r_off in range(-1, 2):
+                            for c_off in range(-1, 2):
+                                if (r_off != 0 or c_off != 0) and 0 <= row + r_off < self.size[1] and 0 <= col + c_off < self.size[0]:
+                                    if self.board.is_bomb_at(row + r_off, col + c_off):
+                                        bomb_count += 1
+                        if bomb_count > 0:
+                            self.text_not_align(self.font3, 15, str(bomb_count), self.black, self.W // 2 - (self.size[0] * 50 // 2) + x + 25, self.H // 2 - (self.size[1] * 50 // 2) + y + 20)
 
     # Check if tile is a bomb
     def check_bomb(self, row, col):
         if self.board.is_bomb_at(row, col):
-            print("Bombe trouvée à la position", (row, col))
-            self.discovered_tile.append(((row, col), True))
+            if (row, col) not in [item[0] for item in self.discovered_tile]:
+                print("Bombe trouvée à la position", (row, col))
+                self.discovered_tile.append(((row, col), True))
         else:
-            print("Pas de bombe à la position", (row, col))
-            self.discovered_tile.append(((row, col), False))
+            if (row, col) not in [item[0] for item in self.discovered_tile]:
+                print("Pas de bombe à la position", (row, col))
+                self.discovered_tile.append(((row, col), False))
             self.check_adjacent_tiles(row, col)
 
     def check_adjacent_tiles(self, row, col):
@@ -199,6 +212,7 @@ class Game(Element):
                         self.__init__(self.size, self.username)
 
                     elif event.button == 1:  # Left click
+
                         for tile_rect, (row, col) in self.board_list:
                             if tile_rect.collidepoint(event.pos):
                                 if not self.timer_started:
@@ -232,7 +246,7 @@ class Game(Element):
             # Start Timer
             if self.timer_started:
                 self.timer_game()
-
             self.design()
             self.draw_board()
+            self.game_lose()
             self.update()
