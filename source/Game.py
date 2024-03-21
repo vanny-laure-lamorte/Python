@@ -136,7 +136,7 @@ class Game(Element):
                 # Display tile not discovered
                 if (row, col) not in [item[0] for item in self.discovered_tile]:
                     tile_rect = pygame.Rect(self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50)
-                    self.board_list.append((tile_rect, (row, col), 0))
+                    self.board_list.append((tile_rect, (row, col)))
                     self.image_not_center("tile", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50, self.img_tile_not_revealed)
 
                     if self.flag_tile == (row, col):
@@ -196,7 +196,7 @@ class Game(Element):
 
                     elif event.button == 1:  # Left click
 
-                        for tile_rect, (row, col), z in self.board_list:
+                        for tile_rect, (row, col) in self.board_list:
                             if tile_rect.collidepoint(event.pos):
                                 self.check_bomb(row, col)
                                 if not self.timer_started:
