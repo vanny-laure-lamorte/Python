@@ -20,14 +20,12 @@ class Game(Element):
         self.bomb_count = self.board.is_bomb()
         self.username = username
         self.tile_count = int(self.size[0]*self.size[1]) - int(self.bomb_count)
-        print(self.tile_count)
         self.discovered_tile = []
         self.tile_states = {}
         self.current_flag_state = EMPTY
         self.flag_tile = None
         self.selected_tile = None
         self.bomb_count_final = 0
-
 
         # Timer
         self.timer_started = False
@@ -89,7 +87,6 @@ class Game(Element):
 
         # Retour Menu
         self.rect_menu = self.button_hover(75, 320, 130, 40, self.orange1, self.white, self.orange1, self.white, "BACK TO MENU", self.font2, self.white,25, 2, 5)
-
 
         # Restart
         self.restart_game = self.button_hover(75, 370, 130, 40, self.orange1, self.white, self.orange1, self.white, "RESTART", self.font2, self.white, 25, 2, 5)
