@@ -152,7 +152,6 @@ class Game(Element):
         self.text_not_align(self.font2, 20, "No Cheese Caught ", self.red, 15, 250)
         self.image_not_center("picture loose", 10, 120, 100, 100, self.img_picture_lose)
 
-
     def draw_board(self):
         # Display grid
         for row in range(self.size[1]):
@@ -218,7 +217,6 @@ class Game(Element):
             if 0 <= r < self.size[1] and 0 <= c < self.size[0]:
                 if not self.board.is_bomb_at(r, c) and ((r, c), False) not in self.discovered_tile:
                     self.check_adjacent_tiles(r, c)
-
 
     def game_run(self):
 

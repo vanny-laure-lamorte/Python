@@ -8,7 +8,10 @@ class Home (Element):
         Element.__init__(self)
         self.input_name = "ENTER YOUR NAME"
         self.entry = False
+
+        # error message
         self.error_message = False
+        self.error_length = False
 
         # Loading images
         self.background_image = pygame.image.load("assets/image/home1.png")
@@ -31,8 +34,11 @@ class Home (Element):
 
         # Options menu
         self.input_name_rect = self.button_hover(440, 390, 240, 50, self.orange, self.white, self.orange, self.white, self.input_name, self.font2, self.white, 35, 2, 5)
+
         if self.error_message:
             self.text_not_align(self.font4, 12,"INVALID USERNAME", self.red, 460, 420)
+        elif self.error_length: 
+            self.text_not_align(self.font2, 20, "You can only use 14 characters", self.red, 335, 420)
 
         self.btn_normal = self.button_hover(440, 470, 180, 50, self.red1, self.white, self.red2, self.white, "Normal", self.font2, self.white, 35, 2, 5)
         self.btn_expert = self.button_hover(440, 530, 180, 50, self.red1, self.white, self.red2, self.white, "Expert", self.font2, self.white, 35, 2, 5)
@@ -41,7 +47,9 @@ class Home (Element):
         # Copyright
         self.text_not_align(self.font3, 15,"©", self.white, 345, 722.5)
         self.text_not_align(self.font3, 10,"Copyright 2024 | All Rights Reserved ", self.white, 360, 725)
-    
+
+        # Error message length name
+           
     def player_info(self): 
         try:
             with open('player_name.json', 'r') as file:
@@ -63,11 +71,12 @@ class Home (Element):
                         self.entry = True
                         self.error_message = False
                         self.entry = 1
+                        self.error_length = False
                         
                     elif self.btn_normal.collidepoint(event.pos):
                         if self.input_name == "" or self.input_name == "ENTER YOUR NAME":
                             self.error_message = True
-
+                      
                         else:
                             g = Game((9,9), self.input_name)
                             g.game_run()
@@ -77,6 +86,7 @@ class Home (Element):
                     elif self.btn_expert.collidepoint(event.pos):
                         if self.input_name == "" or self.input_name == "ENTER YOUR NAME":
                             self.error_message = True
+                   
                         else:
                             g = Game((13,13), self.input_name)
                             g.game_run()
@@ -92,9 +102,18 @@ class Home (Element):
 
                     if event.key == pygame.K_BACKSPACE:
                         self.input_name = self.input_name[:-1]
+                        self.error_length = False
                     else:
                         if event.unicode and len(self.input_name) < 14:
                             self.input_name += event.unicode
+
+                        else:
+                            self.error_length = True
+
+
+                        
+
+
             self.design()
             self.player_info()
             self.update()
