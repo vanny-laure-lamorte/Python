@@ -42,7 +42,6 @@ class Game(Element):
         self.img_tile_empty = pygame.image.load('assets/image/sprite/Tile_empty.png').convert_alpha()
         self.img_tile_not_revealed = pygame.image.load('assets/image/sprite/Tile_not_revealed.png').convert_alpha()
         self.img_tile_bomb = pygame.image.load('assets/image/sprite/Tile_is_bomb.png').convert_alpha()
-        self.img_picture_restart = pygame.image.load('assets/image/game_restart.png').convert_alpha()
         self.img_picture_win = pygame.image.load('assets/image/game_win.png').convert_alpha()
         self.img_tile_flagged = pygame.image.load('assets/image/sprite/Tile_flagged.png').convert_alpha()
         self.img_tile_question_mark = pygame.image.load('assets/image/sprite/Tile_question_mark.png').convert_alpha()
