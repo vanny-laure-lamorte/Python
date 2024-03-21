@@ -4,14 +4,15 @@ class Element(Screen):
     def __init__(self):
         Screen.__init__(self)
 
+        self.red = (255,0,0) 
         self.red1 = (161,15,15) # Mines weeper - menu option
         self.red2 = (199,28,21) # Mines weeper - menu option
         self.white = (255, 255, 255) # Mines weeper - name game
         self.yellow = (233, 164, 41)  # Mines weeper - menu option
-        
-        self.orange = (220, 130, 77)
+        self.orange1 = (231, 63, 19)  # Mines weeper - menu game details
 
         self.orange = (220, 130, 77) # Mines weeper 
+        self.green = (36, 104, 2) # Mines weeper - win
 
         # Color not used
         self.black = (0, 0, 0) 
@@ -45,7 +46,6 @@ class Element(Screen):
         self.pink = (222, 50, 79)
         self.pink1 = (254, 0, 135)      
 
-        self.green = (66, 183, 42)
         self.green2 = (39, 78, 19)
         self.darkgreen = (97, 155, 138)
         self.purple1 = (202, 8, 255)
@@ -60,7 +60,6 @@ class Element(Screen):
         self.yellow = (233, 164, 41)   
         self.lightyellow = (244, 226, 133)
         self.orange2 = (255, 103, 2) 
-        self.red = (242, 106, 141)
         self.darkred = (221, 45, 74)
         self.brown = (75, 67, 67)
 
@@ -68,9 +67,7 @@ class Element(Screen):
         self.font1 = "assets/font/MickeyMouseLine_PERSONAL_USE_ONLY.otf" # Mines weeper - home
         self.font2 = "assets/font/Sunny Spells Basic.ttf" # Mines weeper - home
         self.font3 = "assets/font/Roboto-Medium.ttf" # Mines weeper - copyright
-
-        self.font4 = "assets/font/gg sans Semibold.ttf"
-        self.font5 = "assets/font/gg sans Bold.ttf"
+        self.font4 = "assets/font/Roboto-BoldCondensedItalic.ttf" # Mines weeper - copyright
 
         # Image
         
@@ -189,9 +186,3 @@ class Element(Screen):
 
     def hand_cursor(self):
         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
-
-# Def BackgroundAlpha
-    def screen_alpha(self, color):
-        self.alpha_window = pygame.Surface((self.W, self.H), pygame.SRCALPHA)
-        pygame.draw.rect(self.alpha_window, color, pygame.Rect(0,0, self.W, self.H))
-        self.Window.blit(self.alpha_window, (0,0))

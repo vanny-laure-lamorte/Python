@@ -1,6 +1,6 @@
 import random
-from source.Settings import *
-from source.Tile import Tile
+from Archive.Settings import *
+from Archive.Tile import Tile
 
 def set_up():
 
