@@ -27,7 +27,7 @@ class Board:
                     piece = False
                 row_data.append(piece)
             self.board.append(row_data)
-        return bomb_count
+        return str(bomb_count)
 
     def is_bomb_at(self, row, col):
         return self.board[row][col]
