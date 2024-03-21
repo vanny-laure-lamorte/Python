@@ -6,6 +6,10 @@ from source.pygame_manager.Screen import Screen
 from source.Board import Board 
 import random
 
+FLAG = 1
+QUESTION_MARK = 2
+EMPTY = 0
+
 class Game(Element, Screen): 
     def __init__(self, size):
         self.board = Board(size)
@@ -31,6 +35,11 @@ class Game(Element, Screen):
         self.img_picture_restart = pygame.image.load('assets/image/game_restart.png').convert_alpha()
         self.img_picture_win = pygame.image.load('assets/image/game_win.png').convert_alpha()
         self.img_picture_lose = pygame.image.load('assets/image/game_mad.png').convert_alpha()
+        self.img_tile_flagged = pygame.image.load('assets/image/sprite/Tile_flagged.png').convert_alpha()
+        self.img_tile_question_mark = pygame.image.load('assets/image/sprite/Tile_question_mark.png').convert_alpha()
+
+        self.current_flag_state = EMPTY
+        self.flag_tile = None
 
     def timer_game(self):
 
@@ -101,7 +110,13 @@ class Game(Element, Screen):
                     self.board_list.append((tile_rect, (row, col)))
                     self.image_not_center("tile", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50, self.img_tile_not_revealed)
 
-                else: 
+                    if self.flag_tile == (row, col):
+                        if self.current_flag_state == FLAG:
+                            self.image_not_center("tile", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50, self.img_tile_flagged)
+                        elif self.current_flag_state == QUESTION_MARK:
+                            self.image_not_center("tile", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50, self.img_tile_question_mark)
+
+                else:
                     discovered = False
                     for tile in self.discovered_tile:
                         if tile[0] == (row, col):
@@ -109,10 +124,8 @@ class Game(Element, Screen):
                             break
                     if discovered:
                         self.image_not_center("tile", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50, self.img_tile_bomb)
-
                     else:
                         self.image_not_center("tile", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50, self.img_tile_empty)
-
 
     def check_bomb(self, row, col):
         if self.board.is_bomb_at(row, col):
@@ -121,6 +134,7 @@ class Game(Element, Screen):
         else:
             print("Pas de bombe à la position", (row, col))
             self.discovered_tile.append(((row, col), False))
+
 
     def game_run(self):
 
@@ -135,12 +149,20 @@ class Game(Element, Screen):
                             if tile_rect.collidepoint(event.pos):
                                 self.check_bomb(row, col)
                     elif event.button == 3:
-                        pass 
-                        print(self.bomb_count)
+                        for tile_rect, (row, col) in self.board_list:
+                            if tile_rect.collidepoint(event.pos) and (row, col) not in [item[0] for item in self.discovered_tile]:
+                                if self.current_flag_state == EMPTY:
+                                    self.current_flag_state = FLAG
+                                elif self.current_flag_state == FLAG:
+                                    self.current_flag_state = QUESTION_MARK
+                                else:
+                                    self.current_flag_state = EMPTY
 
+                                self.flag_tile = (row, col)
+                                break
                     elif self.rect_menu.collidepoint(event.pos):
                             self.game_running = False
-                        
+
             self.timer_game()
             self.design()
             self.draw_board()
