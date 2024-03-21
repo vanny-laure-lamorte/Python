@@ -1,6 +1,6 @@
 import pygame
 from os import walk
-from source.Board_test import set_up
+from Archive.Board_test import set_up
 
 row_num = 9
 col_num = 29
