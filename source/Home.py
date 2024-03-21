@@ -1,14 +1,11 @@
-import pygame
-import json
+import pygame, json
 
 from source.Game import Game
 from source.pygame_manager.Element import Element
-from source.pygame_manager.Screen import Screen
 
-class Home (Element, Screen):
+class Home (Element):
     def __init__(self):
         Element.__init__(self)
-        Screen.__init__(self)
         self.input_name = "ENTER YOUR NAME"
         self.entry = False
         self.error_message = False
@@ -16,19 +13,6 @@ class Home (Element, Screen):
         # Loading images
         self.background_image = pygame.image.load("assets/image/home1.png")
         self.home_image = pygame.image.load("assets/image/home2.png")
-
-
-        # test 
-        self.img_game_chrono = pygame.image.load('assets/image/game_chrono.png').convert_alpha()
-        self.img_tom = pygame.image.load('assets/image/game_tom.png').convert_alpha()
-        self.img_game_flag = pygame.image.load('assets/image/game_flag.png').convert_alpha()
-        self.img_tile_empty = pygame.image.load('assets/image/sprite/Tile_empty.png').convert_alpha()
-        self.img_tile_not_revealed = pygame.image.load('assets/image/sprite/Tile_not_revealed.png').convert_alpha()
-        self.img_tile_bomb = pygame.image.load('assets/image/sprite/Tile_is_bomb.png').convert_alpha()
-        self.img_picture_restart = pygame.image.load('assets/image/game_restart.png').convert_alpha()
-        self.img_picture_win = pygame.image.load('assets/image/game_win.png').convert_alpha()
-        self.img_picture_lose = pygame.image.load('assets/image/game_mad.png').convert_alpha()
-
 
         # Player info
         self.player_info_list = []
@@ -41,28 +25,22 @@ class Home (Element, Screen):
         # Image
         self.image_not_center("home2", 250, 20, 375, 400, self.home_image)
 
-   
-
         # Title
         self.text_not_align(self.font1, 50,"Mines Weeper ", self.white, 320, 280)
         self.text_not_align(self.font1, 30,"— TOM & JERRY Version", self.white, 320, 320)
 
         # Options menu
         self.input_name_rect = self.button_hover(440, 390, 240, 50, self.orange, self.white, self.orange, self.white, self.input_name, self.font2, self.white, 35, 2, 5)
+        if self.error_message:
+            self.text_not_align(self.font4, 12,"INVALID USERNAME", self.red, 460, 420)
+
         self.btn_normal = self.button_hover(440, 470, 180, 50, self.red1, self.white, self.red2, self.white, "Normal", self.font2, self.white, 35, 2, 5)
         self.btn_expert = self.button_hover(440, 530, 180, 50, self.red1, self.white, self.red2, self.white, "Expert", self.font2, self.white, 35, 2, 5)
         self.button_hover(440, 590, 180, 50, self.red1, self.white, self.red2, self.white, "Custom", self.font2, self.white, 35, 2, 5)
 
         # Copyright
         self.text_not_align(self.font3, 15,"©", self.white, 345, 722.5)
-
         self.text_not_align(self.font3, 10,"Copyright 2024 | All Rights Reserved ", self.white, 360, 725)
-
-        if self.error_message:
-            self.text_not_align(self.font4, 12,"INVALID USERNAME", self.red, 460, 420)
-
-        # self.text_not_align(self.font4, 12,"INVALID USERNAME", self.red, 460, 420)
-            
     
     def save_player_name(self):
         try:
@@ -70,7 +48,6 @@ class Home (Element, Screen):
                 data = json.load(file)
         except (FileNotFoundError, json.decoder.JSONDecodeError):
             data = []
-
         data.append((self.input_name, self.score))
 
         with open('player_name.json', 'w') as file:
@@ -80,7 +57,6 @@ class Home (Element, Screen):
         try:
             with open('player_name.json', 'r') as file:
                 self.player_info_list = json.load(file)
-
         except(FileNotFoundError, json.decoder.JSONDecodeError):
             pass
 
@@ -127,7 +103,6 @@ class Home (Element, Screen):
                         if event.unicode and len(self.input_name) < 14:
                             self.input_name += event.unicode
             self.design()
-            # self.timer_game()
             self.player_info()
             self.update()
 

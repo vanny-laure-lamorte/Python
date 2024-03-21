@@ -1,16 +1,12 @@
-import pygame
-import time
+import pygame, time
 
 from source.pygame_manager.Element import Element
-from source.pygame_manager.Screen import Screen
 from source.Board import Board 
-import random
 
-class Game(Element, Screen): 
+class Game(Element): 
     def __init__(self, size, username):
         self.board = Board(size)
         Element.__init__(self)
-        Screen.__init__(self)
         self.size = size
         self.board_list = []
         self.game_running = True
@@ -20,10 +16,10 @@ class Game(Element, Screen):
         self.tile_count = int(self.size[0]*self.size[1])
         
         # Timer
-        self.start_time = time.time()
-        self.clock = pygame.time.Clock()
+        self.timer_started = False
+        self.formatted_time = "00:00"       
 
-        # Chargement des images
+        # Loading pictures
         self.img_game_chrono = pygame.image.load('assets/image/game_chrono.png').convert_alpha()
         self.img_tom = pygame.image.load('assets/image/game_tom.png').convert_alpha()
         self.img_game_flag = pygame.image.load('assets/image/game_flag.png').convert_alpha()
@@ -35,17 +31,6 @@ class Game(Element, Screen):
         self.img_picture_lose = pygame.image.load('assets/image/game_lose.png').convert_alpha()
         self.img_best = pygame.image.load('assets/image/game_best.png').convert_alpha()
         self.img_jerry = pygame.image.load('assets/image/icon-jerry1.png').convert_alpha()
-
-    def timer_game(self):
-        self.elapsed_time = time.time() - self.start_time
-
-        minutes = int((self.elapsed_time % 3600) // 60)
-        seconds = int(self.elapsed_time % 60)
-        self.formatted_time = "{:02d}:{:02d}".format(minutes, seconds)
-
-          # Timer
-        self.start_time = time.time()
-        self.clock = pygame.time.Clock()
 
     def timer_game(self):
         self.elapsed_time = time.time() - self.start_time
@@ -83,8 +68,6 @@ class Game(Element, Screen):
         self.text_not_align(self.font2, 40,"02:14", self.white, 45, 525)
         self.text_not_align(self.font2, 20,"by Lucy Madec", self.white, 25, 560)
 
-
-
         # Timer        
         self. rect_full(self.white, 890, 160, 80, 90, 5)
         self.rect_border(self.orange1, 890, 160, 80, 90, 3, 5)
@@ -107,36 +90,40 @@ class Game(Element, Screen):
      
         # Red tiles
         remaining_tiles = self.tile_count - len(self.discovered_tile)
-
         self. rect_full(self.white, 890, 460, 80, 90, 5)
         self.rect_border(self.orange1, 890, 460, 80, 90, 3, 5)
         self.image_not_center("tile", 868, 425, 40, 40, self.img_tile_not_revealed)
         self.text_not_align(self.font3, 12, "X", self.black, 865, 485)
         self.text_not_align(self.font3, 15, str(remaining_tiles), self.black, 880, 483)
 
+    # Display win message
     def game_win(self): 
         self.text_not_align(self.font2, 20, "You Just Won", self.green, 15, 225)
         self.text_not_align(self.font2, 20, "The Cheese ! ", self.green, 15, 250)
         self.image_not_center("picture win", 10, 120, 100, 100, self.img_picture_win)
 
-
+    # Display lose message
     def game_lose(self): 
         self.text_not_align(self.font2, 20, "You Lose...", self.red, 15, 225)
         self.text_not_align(self.font2, 20, "No Cheese Caught ", self.red, 15, 250)
         self.image_not_center("picture win", 10, 120, 100, 100, self.img_picture_lose)
 
-
     def draw_board(self):
+
+        # Display grid
         self.board_list = []
         for row in range(self.size[1]):
             for col in range(self.size[0]):
                 x = col * 51
                 y = row * 51
+
+                # Display tile not discovered
                 if (row, col) not in [item[0] for item in self.discovered_tile]:
                     tile_rect = pygame.Rect(self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50)
                     self.board_list.append((tile_rect, (row, col)))
                     self.image_not_center("tile", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50, self.img_tile_not_revealed)
 
+                # Display empty tile or bomb
                 else: 
                     discovered = False
                     for tile in self.discovered_tile:
@@ -149,7 +136,7 @@ class Game(Element, Screen):
                     else:
                         self.image_not_center("tile", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50, self.img_tile_empty)
 
-
+    # Check if tile is a bomb
     def check_bomb(self, row, col):
         if self.board.is_bomb_at(row, col):
             print("Bombe trouvée à la position", (row, col))
@@ -169,16 +156,22 @@ class Game(Element, Screen):
 
                     if self.rect_menu.collidepoint(event.pos):
                         self.game_running = False
-                    elif event.button == 1:
+
+                    elif event.button == 1:  # Left click
                         for tile_rect, (row, col) in self.board_list:
                             if tile_rect.collidepoint(event.pos):
                                 self.check_bomb(row, col)
-                    elif event.button == 3:
+
+                                if not self.timer_started:
+                                    self.timer_started = True
+                                    self.start_time = time.time()
+                    elif event.button == 3: # Right click - Flag, question, empty tile
                         pass 
 
-            self.timer_game()
+            # Start Timer
+            if self.timer_started:
+                self.timer_game()
+
             self.design()
             self.draw_board()
-            self.game_win()
-            # self.game_lose()
             self.update()
