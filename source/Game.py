@@ -149,6 +149,14 @@ class Game(Element):
                         self.image_not_center("tile", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50, self.img_tile_bomb)
                     else:
                         self.image_not_center("tile", self.W // 2 - (self.size[0] * 50 // 2) + x, self.H // 2 - (self.size[1] * 50 // 2) + y, 50, 50, self.img_tile_empty)
+                        bomb_count = 0
+                        for r_off in range(-1, 2):
+                            for c_off in range(-1, 2):
+                                if (r_off != 0 or c_off != 0) and 0 <= row + r_off < self.size[1] and 0 <= col + c_off < self.size[0]:
+                                    if self.board.is_bomb_at(row + r_off, col + c_off):
+                                        bomb_count += 1
+                        if bomb_count > 0:
+                            self.text_not_align(self.font3, 15, str(bomb_count), self.black, self.W // 2 - (self.size[0] * 50 // 2) + x + 25, self.H // 2 - (self.size[1] * 50 // 2) + y + 20)
 
     # Check if tile is a bomb
     def check_bomb(self, row, col):
@@ -212,7 +220,6 @@ class Game(Element):
             # Start Timer
             if self.timer_started:
                 self.timer_game()
-
             self.design()
             self.draw_board()
             self.update()
