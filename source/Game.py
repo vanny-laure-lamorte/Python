@@ -196,7 +196,7 @@ class Game(Element):
                                     if self.board.is_bomb_at(row + r, col + c):
                                         bomb_count += 1
                         if bomb_count > 0:
-                            self.text_not_align(self.font3, 15, str(bomb_count), self.black, self.W // 2 - (self.size[0] * 50 // 2) + x + 25, self.H // 2 - (self.size[1] * 50 // 2) + y + 20)
+                            self.text_not_align(self.font5, 20, str(bomb_count), self.black, self.W // 2 - (self.size[0] * 50 // 2) + x + 15, self.H // 2 - (self.size[1] * 50 // 2) + y + 5 )
 
     # Check if tile is a bomb
     def check_bomb(self, row, col):

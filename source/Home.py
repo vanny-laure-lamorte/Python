@@ -1,4 +1,4 @@
-import pygame, json
+import pygame
 
 from source.Game import Game
 from source.pygame_manager.Element import Element
@@ -41,13 +41,6 @@ class Home (Element):
         # Copyright
         self.text_not_align(self.font3, 15,"©", self.white, 345, 722.5)
         self.text_not_align(self.font3, 10,"Copyright 2024 | All Rights Reserved ", self.white, 360, 725)
-    
-    def player_info(self): 
-        try:
-            with open('player_name.json', 'r') as file:
-                self.player_info_list = json.load(file)
-        except(FileNotFoundError, json.decoder.JSONDecodeError):
-            pass
 
     def run_home(self):
         home_running = True
@@ -96,7 +89,4 @@ class Home (Element):
                         if event.unicode and len(self.input_name) < 14:
                             self.input_name += event.unicode
             self.design()
-            self.player_info()
             self.update()
-
-
