@@ -46,9 +46,8 @@ class Element(Screen):
 
 # Def image
 
-    def img_center(self, name, x, y, width, height, image_name):
-        name = pygame.image.load(f'assets/image/{image_name}.png')
-        name = pygame.transform.scale(name, (width, height))
+    def img_center(self, name, x, y, width, height, image):
+        name = pygame.transform.scale(image, (width, height))
         self.Window.blit(name, (x - name.get_width()//2, y - name.get_height()//2))
         button = pygame.Rect((x - width//2), (y - height//2), width, height)
         return button
