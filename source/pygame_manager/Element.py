@@ -13,6 +13,7 @@ class Element(Screen):
         self.orange = (220, 130, 77) # Mines weeper 
         self.orange1 = (231, 63, 19)  # Mines weeper - menu game details
         self.green = (36, 104, 42) # Mines weeper - win
+        self.blue = (50, 130, 193) # Mines weeper - win
 
         # Font   
         self.font1 = "assets/font/MickeyMouseLine_PERSONAL_USE_ONLY.otf" # Mines weeper - home

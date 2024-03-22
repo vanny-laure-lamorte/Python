@@ -16,9 +16,63 @@ class Home (Element):
         # Loading images
         self.background_image = pygame.image.load("assets/image/home1.png")
         self.home_image = pygame.image.load("assets/image/home2.png")
+       
+        self.image_premium = pygame.image.load("assets/image/home_premium.png")
+
+        self.image_lock = pygame.image.load("assets/image/icon-jerry.png")
+        self.image_lock = pygame.transform.scale(self.image_lock, (50, 50)) 
+
+        self.image_lock1 = pygame.image.load("assets/image/icon-jerry1.png")
+        self.image_lock1 = pygame.transform.scale(self.image_lock1, (50, 50)) 
 
         # Player info
         self.player_info_list = []
+
+        # Jump lock
+        self.jumping = False
+        self.jump_count = 10
+        self.jump_timer = 0
+        self.jump_cooldown = 30
+        self.clock = pygame.time.Clock()
+
+        self.jerry_x = 670 //2 - self.image_lock.get_width() // 2
+        self.jerry_y = 880 - self.image_lock.get_height()
+
+        self.jerry_y = 880 - self.image_lock1.get_height()
+
+
+        self.jerry1_x = 1165 //2 - self.image_lock1.get_width() // 2
+
+        self.clock = pygame.time.Clock()
+
+
+    def jump(self): 
+        current_time = pygame.time.get_ticks()
+        if current_time - self.jump_timer  > self.jump_cooldown:
+            self.jumping = True
+            self.jump_timer  = current_time
+        
+        if self.jumping:
+            if self.jump_count >= -4:
+                self.jerry_y -= (self.jump_count * abs(self.jump_count)) * 0.5
+                self.jump_count -= 1
+            else:
+                self.jump_count = 4
+                self.jumping = False
+
+        self.Window.blit(self.image_lock, (self.jerry_x, self.jerry_y))
+        self.Window.blit(self.image_lock1, (self.jerry1_x, self.jerry_y))
+        # self.clock.tick(30) 
+
+        
+        # self.image_not_center("lock", 300, 640, 60, 60, self.image_lock)
+
+    def premium(self):
+        # line
+        # pygame.draw.line(self.Window, self.white, (330, 550), (550, 550), 4)
+        self.image_not_center("gold rect", 370, 580, 180, 180, self.image_premium)
+        self.text_not_align(self.font2, 20," Unlock all levels", self.white, 400, 658)
+        self.text_not_align(self.font2, 25,"PREMIUM", self.blue, 420, 675)
 
     def design(self):
 
@@ -42,14 +96,11 @@ class Home (Element):
 
         self.btn_normal = self.button_hover(440, 450, 180, 50, self.red1, self.white, self.red2, self.white, "Normal", self.font2, self.white, 35, 2, 5)
         self.btn_expert = self.button_hover(440, 510, 175, 50, self.red1, self.white, self.red2, self.white, "Expert", self.font2, self.white, 35, 2, 5)
-        self.button_hover(440, 590, 150, 50, self.red1, self.white, self.red2, self.white, "Custom", self.font2, self.white, 35, 2, 5)
-        self.button_hover(400, 635, 65, 30, self.red1, self.white, self.red2, self.white, "Columns", self.font2, self.white, 20, 2, 5)
-        self.button_hover(480, 635, 65, 30, self.red1, self.white, self.red2, self.white, "Rows", self.font2, self.white, 20, 2, 5)
+        self.button_hover(390, 597, 140, 55, self.red1, self.white, self.red2, self.white, "Custom", self.font2, self.white, 35, 2, 5)
+        self.button_hover(500, 583, 65, 25, self.red1, self.white, self.red2, self.white, "Columns", self.font3, self.white, 10, 2, 5)
+        self.button_hover(500, 613, 65, 25, self.red1, self.white, self.red2, self.white, "Rows", self.font3, self.white, 10, 2, 5)
 
-        # line
-        pygame.draw.line(self.Window, self.white, (330, 550), (550, 550), 4)
-
-        # Error message length name
+        self.premium()
            
     def player_info(self): 
         try:
@@ -110,13 +161,11 @@ class Home (Element):
 
                         else:
                             self.error_length = True
-
-
-                        
-
+           
 
             self.design()
             self.player_info()
+            self.jump()
             self.update()
 
 
