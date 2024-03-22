@@ -76,8 +76,8 @@ class Game(Element):
         self.bomb_count_final = int(self.bomb_count) - self.flag_count
 
         # Title
-        self.text_not_align(self.font1, 30,"Mines Weeper ", self.white, 8, 10)
-        self.text_not_align(self.font1, 18,"— by L M, H N & VL", self.white, 10, 38)
+        self.text_not_align(self.font1, 30,"Mines Weeper ", self.white, 8, 8)
+        self.text_not_align(self.font1, 18,"— by L M, H N & VL", self.white, 10, 35)
 
         # Logo Jerry
         self.image_not_center("picture win", 855, 25, 80, 80, self.img_jerry)

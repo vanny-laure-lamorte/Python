@@ -33,20 +33,21 @@ class Home (Element):
         self.text_not_align(self.font1, 30,"— TOM & JERRY Version", self.white, 320, 320)
 
         # Options menu
-        self.input_name_rect = self.button_hover(440, 390, 240, 50, self.orange, self.white, self.orange, self.white, self.input_name, self.font2, self.white, 35, 2, 5)
+        self.input_name_rect = self.button_hover(440, 375, 240, 50, self.orange, self.white, self.orange, self.white, self.input_name, self.font2, self.white, 35, 2, 5)
 
         if self.error_message:
-            self.text_not_align(self.font4, 12,"INVALID USERNAME", self.red, 460, 420)
+            self.text_not_align(self.font4, 12,"INVALID USERNAME", self.red, 460, 400)
         elif self.error_length: 
-            self.text_not_align(self.font2, 20, "You can only use 14 characters", self.red, 335, 420)
+            self.text_not_align(self.font2, 20, "You can only use 14 characters", self.red, 335, 405)
 
-        self.btn_normal = self.button_hover(440, 470, 180, 50, self.red1, self.white, self.red2, self.white, "Normal", self.font2, self.white, 35, 2, 5)
-        self.btn_expert = self.button_hover(440, 530, 180, 50, self.red1, self.white, self.red2, self.white, "Expert", self.font2, self.white, 35, 2, 5)
-        self.button_hover(440, 590, 180, 50, self.red1, self.white, self.red2, self.white, "Custom", self.font2, self.white, 35, 2, 5)
+        self.btn_normal = self.button_hover(440, 450, 180, 50, self.red1, self.white, self.red2, self.white, "Normal", self.font2, self.white, 35, 2, 5)
+        self.btn_expert = self.button_hover(440, 510, 175, 50, self.red1, self.white, self.red2, self.white, "Expert", self.font2, self.white, 35, 2, 5)
+        self.button_hover(440, 590, 150, 50, self.red1, self.white, self.red2, self.white, "Custom", self.font2, self.white, 35, 2, 5)
+        self.button_hover(400, 635, 65, 30, self.red1, self.white, self.red2, self.white, "Columns", self.font2, self.white, 20, 2, 5)
+        self.button_hover(480, 635, 65, 30, self.red1, self.white, self.red2, self.white, "Rows", self.font2, self.white, 20, 2, 5)
 
-        # Copyright
-        self.text_not_align(self.font3, 15,"©", self.white, 345, 722.5)
-        self.text_not_align(self.font3, 10,"Copyright 2024 | All Rights Reserved ", self.white, 360, 725)
+        # line
+        pygame.draw.line(self.Window, self.white, (330, 550), (550, 550), 4)
 
         # Error message length name
            
