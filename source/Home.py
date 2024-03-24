@@ -49,8 +49,6 @@ class Home (Element):
 
         self.clock = pygame.time.Clock()
 
-    # def jump(self): 
-        
 
     def premium(self):
 
