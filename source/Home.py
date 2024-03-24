@@ -15,6 +15,7 @@ class Home (Element):
         self.input_rows = "Enter rows"
         self.input_cols = "Enter columns"
         self.error_grid = False
+        self.error_premium = False
 
         # Loading images
         self.background_image = pygame.image.load("assets/image/home1.png")
@@ -48,8 +49,11 @@ class Home (Element):
 
         self.clock = pygame.time.Clock()
 
+    # def jump(self): 
+        
 
-    def jump(self): 
+    def premium(self):
+
         current_time = pygame.time.get_ticks()
         if current_time - self.jump_timer  > self.jump_cooldown:
             self.jumping = True
@@ -66,7 +70,6 @@ class Home (Element):
         self.Window.blit(self.image_lock, (self.jerry_x, self.jerry_y))
         self.Window.blit(self.image_lock1, (self.jerry1_x, self.jerry_y))
 
-    def premium(self):
         self.img_center("premium", self.W//2, 670, 180, 180,self.image_premium )
         self.text_center(self.font2, 20," Unlock all levels", self.white, self.W//2, 658)
         self.text_center(self.font2, 25,"PREMIUM", self.blue, self.W//2, 685)
@@ -80,7 +83,6 @@ class Home (Element):
         # self.image_not_center("home2", 250, 20, 375, 400, self.home_image)
         self.img_center("home2", self.W//2, 205, 375, 400,self.home_image)
 
-
         # Title
         self.text_center(self.font1, 50,"Mines Weeper ", self.white, self.W//2, 280)
         self.text_center(self.font1, 30,"— TOM & JERRY Version", self.white, self.W//2, 320)
@@ -93,15 +95,19 @@ class Home (Element):
         elif self.error_length: 
             self.text_not_align(self.font4, 12, "YOU CAN ONLY USE 14 CHARACTERS", self.red, 410, 403)
 
-        self.btn_normal = self.button_hover(440, 470, 180, 50, self.red1, self.white, self.red2, self.white, "Normal", self.font2, self.white, 35, 2, 5)
-        self.btn_expert = self.button_hover(440, 530, 180, 50, self.red1, self.white, self.red2, self.white, "Expert", self.font2, self.white, 35, 2, 5)
+        self.btn_normal = self.button_hover(self.W//2, 450, 180, 50, self.red1, self.white, self.red2, self.white, "Normal", self.font2, self.white, 35, 2, 5)
+        self.btn_expert = self.button_hover(self.W//2, 510, 180, 50, self.red1, self.white, self.red2, self.white, "Expert", self.font2, self.white, 35, 2, 5)
         self.btn_custom = self.button_hover(430, 570, 140, 55, self.red1, self.white, self.red2, self.white, "Custom", self.font2, self.white, 35, 2, 5)
         self.input_cols_rect = self.button_hover(550, 555, 65, 25, self.red1, self.white, self.red2, self.white, self.input_cols, self.font3, self.white, 10, 2, 5)
         self.input_rows_rect = self.button_hover(550, 585, 65, 25, self.red1, self.white, self.red2, self.white, self.input_rows, self.font3, self.white, 10, 2, 5)
 
-        self.text_not_align(self.font4, 12,"Min columns and row: 4", self.red, 360, 600)
+        if self.error_grid: 
+            self.text_not_align(self.font4, 12,"Min columns and row: 4", self.red, 360, 600)
        
-        self.premium()
+        if self.error_premium: 
+            if int(self.input_rows) < 13 and int(self.input_cols) < 13: 
+                self.error_premium = False
+            self.premium()
 
         # Copyright
         self.text_not_align(self.font3, 15,"©", self.white, 345, 722.5)
@@ -116,13 +122,13 @@ class Home (Element):
 
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if self.input_rows_rect.collidepoint(event.pos):
-                        self.input_rows = ""
-                        self.error_message = False
+                        if self.input_rows == "Enter rows":
+                            self.input_rows = ""
                         self.entry = True
-
+                       
                     elif self.input_cols_rect.collidepoint(event.pos):
-                        self.input_cols = ""
-                        self.error_message = False
+                        if self.input_cols == "Enter columns":
+                            self.input_cols = ""
                         self.entry = True
 
                     elif self.input_name_rect.collidepoint(event.pos):
@@ -137,11 +143,11 @@ class Home (Element):
                             self.error_message = True
                             self.error_length = False
 
-                      
                         else:
                             g = Game((9,9), self.input_name)
                             g.game_run()
-                            self.input_name = ""
+                            self.input_name, self.input_cols, self.input_rows = "ENTER YOUR NAME", "Enter columns", "Enter rows"
+
 
                     elif self.btn_expert.collidepoint(event.pos):
                         if self.input_name == "" or self.input_name == "ENTER YOUR NAME":
@@ -150,35 +156,32 @@ class Home (Element):
                         else:
                             g = Game((13,13), self.input_name)
                             g.game_run()
-                            self.input_name = ""
+                            self.input_name, self.input_cols, self.input_rows = "ENTER YOUR NAME", "Enter columns", "Enter rows"
 
                     elif self.btn_custom.collidepoint(event.pos):
                         if self.input_name == "" or self.input_name == "ENTER YOUR NAME" or self.input_rows == "" or  self.input_rows == "Enter rows" or self.input_cols == "" or self.input_cols == "Enter columns":
                             self.error_message = True
                         else:
-                            g = Game((int(self.input_rows), int(self.input_cols)), self.input_name)
-                            g.game_run()
-                            self.input_name = ""
+                            if int(self.input_cols) < 4 or int(self.input_rows) < 4: 
+                                self.error_grid = True
+
+                            elif int(self.input_cols) > 13 or int(self.input_rows) > 13: 
+                                self.error_premium = True
+                            else:
+                                g = Game((int(self.input_rows), int(self.input_cols)), self.input_name)
+                                g.game_run()
+                                self.input_name, self.input_cols, self.input_rows = "ENTER YOUR NAME", "Enter columns", "Enter rows"
+                                
                     else:
                         self.entry = False
 
                 elif event.type == pygame.KEYDOWN:
                     if self.entry:
-                        if event.key == pygame.K_RETURN:
-                            if self.input_name:
-                                self.save_player_name()
-
+                        
                         if event.key == pygame.K_BACKSPACE and self.input_name_rect.collidepoint(pygame.mouse.get_pos()):
                             self.input_name = self.input_name[:-1]
                             self.error_length = False
-                        elif : 
-                        
-                            if event.unicode and len(self.input_name) < 14:
-                                self.input_name += event.unicode
-
-                            else:
-                                self.error_length = True
-
+                      
                         elif event.key == pygame.K_BACKSPACE and self.input_rows_rect.collidepoint(pygame.mouse.get_pos()):
                             self.input_rows = self.input_rows[:-1]
 
@@ -195,12 +198,14 @@ class Home (Element):
                             if len(self.input_rows) < 2:
                                 if event.unicode.isdigit():
                                     self.input_rows += event.unicode
+                                    self.error_grid = False
+                                
 
                         elif self.input_cols_rect.collidepoint(pygame.mouse.get_pos()):
                             if len(self.input_cols) < 2:
                                 if event.unicode.isdigit():
                                     self.input_cols += event.unicode
+                                    self.error_grid = False
+                                    
             self.design()
-            self.player_info()
-            self.jump()
             self.update()
