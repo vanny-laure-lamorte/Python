@@ -12,6 +12,7 @@ class Home (Element):
         # error message
         self.error_message = False
         self.error_length = False
+        self.error_grid = False
 
         # Loading images
         self.background_image = pygame.image.load("assets/image/home1.png")
@@ -86,13 +87,17 @@ class Home (Element):
         self.input_name_rect = self.button_hover(self.W//2, 375, 240, 50, self.orange, self.white, self.orange, self.white, self.input_name, self.font2, self.white, 35, 2, 5)
 
         if self.error_message:
-            self.text_not_align(self.font4, 12,"INVALID USERNAME", self.red, 460, 400)
+            self.text_not_align(self.font4, 12,"INVALID USERNAME", self.red, 495, 403)
         elif self.error_length: 
-            self.text_not_align(self.font2, 20, "You can only use 14 characters", self.red, 335, 405)
+            self.text_not_align(self.font4, 12, "YOU CAN ONLY USE 14 CHARACTERS", self.red, 410, 403)
 
         self.btn_normal = self.button_hover(self.W//2, 450, 180, 50, self.red1, self.white, self.red2, self.white, "Normal", self.font2, self.white, 35, 2, 5)
         self.btn_expert = self.button_hover(self.W//2, 510, 175, 50, self.red1, self.white, self.red2, self.white, "Expert", self.font2, self.white, 35, 2, 5)
         self.button_hover(430, 570, 140, 55, self.red1, self.white, self.red2, self.white, "Custom", self.font2, self.white, 35, 2, 5)
+        
+        self.text_not_align(self.font4, 12,"Min columns and row: 4", self.red, 360, 600)
+
+            
         self.button_hover(550, 555, 65, 25, self.red1, self.white, self.red2, self.white, "Columns", self.font3, self.white, 10, 2, 5)
         self.button_hover(550, 585, 65, 25, self.red1, self.white, self.red2, self.white, "Rows", self.font3, self.white, 10, 2, 5)
 
