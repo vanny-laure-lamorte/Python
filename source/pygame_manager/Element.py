@@ -4,13 +4,13 @@ class Element(Screen):
     def __init__(self):
         Screen.__init__(self)
 
-        self.red = (255,0,0) 
+        self.red = (255,0,0)
         self.red1 = (161,15,15) # Mines weeper - menu option
         self.red2 = (199,28,21) # Mines weeper - menu option
         self.white = (255, 255, 255) # Mines weeper - name game
         self.yellow = (233, 164, 41)  # Mines weeper - menu option
         self.black = (0,0,0)
-        self.orange = (220, 130, 77) # Mines weeper 
+        self.orange = (220, 130, 77) # Mines weeper
         self.orange1 = (231, 63, 19)  # Mines weeper - menu game details
         self.green = (36, 104, 42) # Mines weeper - win
         self.blue = (50, 130, 193) # Mines weeper - win
@@ -23,8 +23,8 @@ class Element(Screen):
         self.font5 = "assets/font/Jackpot.ttf" # Mines weeper - copyright
 
         # Image
-        
-# Def text          
+
+# Def text
 
     def text_center(self, font, text_size, text_content, color, x, y):
         pygame.font.init()
@@ -59,25 +59,25 @@ class Element(Screen):
         self.Window.blit(name, (x,y))
         button = pygame.Rect(x, y, width, height)
         return button
-        
+
     # Mines weeper - home background
     def img_background(self, x, y, width, height, image):
         image = pygame.transform.smoothscale(image, (width, height))
         self.Window.blit(image, (x - image.get_width()//2, y - image.get_height()//2))
 
-    def hover_image(self, name_rect, name, x, y, width, height, image_name, image_name_hover): 
-        name_rect = pygame.Rect( x - width//2, y - height//2, width, height)        
+    def hover_image(self, name_rect, name, x, y, width, height, image_name, image_name_hover):
+        name_rect = pygame.Rect( x - width//2, y - height//2, width, height)
         if self.is_mouse_over_button(name_rect):
-            self.img_center(name, x, y, width+5, height+5, image_name_hover)     
+            self.img_center(name, x, y, width+5, height+5, image_name_hover)
         else:
             self.img_center(name, x, y, width, height, image_name)
         return name_rect
- 
-# Def rectangle  
+
+# Def rectangle
     def rect_full(self, color, x, y, width, height, radius):
         button = pygame.draw.rect(self.Window, color, pygame.Rect(x - width//2, y - height//2, width, height),0, radius)
         return button
-    
+
     def rect_full_not_centered(self, color, x, y, width, height, radius):
         button = pygame.draw.rect(self.Window, color, pygame.Rect(x, y, width, height),0, radius)
         return button
@@ -86,21 +86,12 @@ class Element(Screen):
         button = pygame.draw.rect(self.Window, color, pygame.Rect(x - width //2, y - height //2, width, height),  thickness, radius)
         return button
     
-    # Rect border only on top  
-    def rect_radius_top(self, color, x, y, width, height, radius):
-        button = pygame.draw.rect(self.Window, color, pygame.Rect(x - width //2, y - height //2, width, height),False,0, radius, radius)
-        return button
-
-    # Rect border only on bottom
-    def rect_radius_bot(self, color, x, y, width, height, radius):
-        button = pygame.draw.rect(self.Window, color, pygame.Rect(x - width //2, y - height //2, width, height),False ,0,0,0, radius, radius)
-        return button
 
 # Def Hover
     def is_mouse_over_button(self, button_rect):
         mouse_pos = pygame.mouse.get_pos()
         return button_rect.collidepoint(mouse_pos)
-    
+
     # Mines weeper - home menu options
     def button_hover(self, x, y, width, height, color_full, color_border, color_hover, color_border_hover, text, font, text_color,text_size, thickness, radius): 
 
@@ -113,5 +104,6 @@ class Element(Screen):
             self.rect_full(color_full, x, y, width, height, radius)
             self.rect_border(color_border, x, y, width, height, thickness, radius)
         self.text_center(font, text_size, text, text_color,  x, y)
+
 
         return button
