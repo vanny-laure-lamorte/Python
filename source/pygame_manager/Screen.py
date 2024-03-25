@@ -16,6 +16,6 @@ class Screen:
         self.clock.tick(30)
         self.Window.fill((0, 0, 0))
 
-    def screen_color(self, color): 
+    def screen_color(self, color):
         self.Window.fill(color)
 

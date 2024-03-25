@@ -6,7 +6,9 @@ class Board:
         self.max_tile = self.size[0] * self.size[1]
 
     def bomb_number(self):
-        if self.max_tile < 100:
+        if self.max_tile < 50:
+            return random.randint(3, 5)
+        elif self.max_tile < 100:
             return random.randint(8, 12)
         elif self.max_tile < 121:
             return random.randint(12, 18)
@@ -17,7 +19,7 @@ class Board:
 
     def is_bomb(self):
         bomb_count = self.bomb_number()
-        bomb_positions = random.sample(range(self.size[0] * self.size[1]), bomb_count)  
+        bomb_positions = random.sample(range(self.size[0] * self.size[1]), bomb_count)
         for row in range(self.size[1]):
             row_data = []
             for col in range(self.size[0]):

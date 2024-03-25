@@ -30,13 +30,16 @@ class Game(Element):
         self.timer = True
         self.best_time = float('inf')
         self.player_name = None
+        self.player_name_default = "NOT FOUND"
+        self.best_time_default = "NOT FOUND"
+        self.first_click = True
 
         # Timer
         self.timer_started = False
         self.formatted_time = "00:00"
 
-        # Bomb 
-        self.tile_is_bomb = False     
+        # Bomb
+        self.tile_is_bomb = False
         self.bomb_count_final = 0
 
         # Loading pictures
@@ -101,6 +104,7 @@ class Game(Element):
         # Restart
         self.restart_game = self.button_hover(75, 370, 130, 40, self.orange1, self.white, self.orange1, self.white, "RESTART", self.font2, self.white, 25, 2, 5)
 
+        # Take the best time player
         with open("player_name.json", "r") as file:
             data = json.load(file)
 
@@ -119,8 +123,12 @@ class Game(Element):
         self.text_not_align(self.font2, 25," Player Time ", self.white, 25, 475)
         self.image_not_center("Winner", 20, 430, 40, 40, self.img_best)
 
-        self.text_not_align(self.font2, 40,(str(self.best_time) + " SEC"), self.white, 25, 525)
-        self.text_not_align(self.font2, 20,"by " + str(self.player_name), self.white, 25, 560)
+        if data != []:
+            self.text_not_align(self.font2, 40,(str(self.best_time) + " SEC"), self.white, 25, 525)
+            self.text_not_align(self.font2, 20,"by " + str(self.player_name), self.white, 25, 560)
+        else:
+            self.text_not_align(self.font2, 30, self.best_time_default , self.white, 25, 525)
+            self.text_not_align(self.font2, 20, self.player_name_default, self.white, 25, 560)
 
         # Timer
         self. rect_full(self.white, 890, 160, 80, 90, 5)
@@ -154,7 +162,7 @@ class Game(Element):
         if self.tile_is_bomb == True:
             self.game_lose()
             self.game_finished = True
-        if self.remaining_tiles == 0:
+        if self.remaining_tiles == 0 and not self.tile_is_bomb:
             self.game_win()
             if not self.add_info_json:
                 self.save_player_name()
@@ -173,6 +181,7 @@ class Game(Element):
         self.text_not_align(self.font2, 20, "You Lose...", self.red, 15, 225)
         self.text_not_align(self.font2, 20, "No Cheese Caught ", self.red, 15, 250)
         self.image_not_center("picture loose", 10, 120, 100, 100, self.img_picture_lose)
+        self.timer = False
 
     def draw_board(self):
         # Display grid
@@ -225,22 +234,24 @@ class Game(Element):
             self.tile_is_bomb = True
         else:
             self.check_adjacent_tiles(row, col)
-    
+
     def check_adjacent_tiles(self, row, col):
         adjacent_tiles = [(row - 1, col - 1), (row - 1, col), (row - 1, col + 1),
                         (row, col - 1),                     (row, col + 1),
                         (row + 1, col - 1), (row + 1, col), (row + 1, col + 1)]
-        
+
         if (row, col) not in [item[0] for item in self.discovered_tile]:
             self.discovered_tile.append(((row, col), False))
         for r, c in adjacent_tiles:
             if 0 <= r < self.size[1] and 0 <= c < self.size[0]:
-                if self.board.is_bomb_at(r, c):
-                    return
+                if self.tile_states.get((r, c), EMPTY) not in [FLAG, QUESTION_MARK]:
+                    if self.board.is_bomb_at(r, c):
+                        return
         for r, c in adjacent_tiles:
             if 0 <= r < self.size[1] and 0 <= c < self.size[0]:
-                if not self.board.is_bomb_at(r, c) and ((r, c), False) not in self.discovered_tile:
-                    self.check_adjacent_tiles(r, c)
+                if self.tile_states.get((r, c), EMPTY) not in [FLAG, QUESTION_MARK]:
+                    if not self.board.is_bomb_at(r, c) and ((r, c), False) not in self.discovered_tile:
+                        self.check_adjacent_tiles(r, c)
 
     def game_run(self):
 
@@ -258,12 +269,17 @@ class Game(Element):
                         self.__init__(self.size, self.username)
 
                     elif event.button == 1 and not self.game_finished:  # Left click
-
                         for tile_rect, (row, col) in self.board_list:
                             if tile_rect.collidepoint(event.pos):
                                 if not self.timer_started:
                                     self.timer_started = True
                                     self.start_time = time.time()
+
+                                if self.first_click:
+                                    if self.board.is_bomb_at(row, col):
+                                        self.first_click = False
+                                        print("TOMATE")
+
                                 if ((row, col) not in [item[0] for item in self.discovered_tile] and self.tile_states.get((row, col), EMPTY) != FLAG and self.tile_states.get((row, col), EMPTY) != QUESTION_MARK):
                                     self.check_bomb(row, col)
                                 break
@@ -286,7 +302,7 @@ class Game(Element):
                                 break
 
                     elif self.rect_menu.collidepoint(event.pos):
-                            self.game_running = False
+                        self.game_running = False
 
             # Start Timer
             if self.timer_started:
