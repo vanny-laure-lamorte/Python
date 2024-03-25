@@ -153,7 +153,7 @@ class Home (Element):
                         else:
                             g = Game((9,9), self.input_name)
                             g.game_run()
-                            self.input_name, self.input_cols, self.input_rows = "ENTER YOUR NAME", "Enter columns", "Enter rows"
+                            self.input_name, self.input_cols, self.input_rows,self.error_premium = "ENTER YOUR NAME", "Enter columns", "Enter rows", False
 
 
                     elif self.btn_expert.collidepoint(event.pos):
@@ -163,7 +163,7 @@ class Home (Element):
                         else:
                             g = Game((13,13), self.input_name)
                             g.game_run()
-                            self.input_name, self.input_cols, self.input_rows = "ENTER YOUR NAME", "Enter columns", "Enter rows"
+                            self.input_name, self.input_cols, self.input_rows, self.error_premium= "ENTER YOUR NAME", "Enter columns", "Enter rows", False
 
                     elif self.btn_custom.collidepoint(event.pos):
                         if self.input_rows == "" or self.input_rows == "Enter rows":
