@@ -18,7 +18,7 @@ class Game(Element):
         self.game_running = True
         self.game_finished = False
         self.flag_count = 0
-        self.bomb_count = self.board.is_bomb()
+        self.bomb_count = self.board.bomb_number()
         self.username = username
         self.tile_count = 0
         self.discovered_tile = []
@@ -30,6 +30,7 @@ class Game(Element):
         self.timer = True
         self.best_time = float('inf')
         self.player_name = None
+        self.first_click = True
 
         # Timer
         self.timer_started = False
@@ -79,6 +80,8 @@ class Game(Element):
         return min * 60 + sec
 
     def design(self):
+        # if self.bomb_count == None:
+        #     self.bomb_count = 0
         # Background
         self.screen_color(self.orange)
 
@@ -154,6 +157,7 @@ class Game(Element):
         if self.tile_is_bomb == True:
             self.game_lose()
             self.game_finished = True
+
         if self.remaining_tiles == 0:
             self.game_win()
             if not self.add_info_json:
@@ -217,6 +221,13 @@ class Game(Element):
                         if bomb_count > 0:
                             self.text_not_align(self.font5, 20, str(bomb_count), self.black, self.W // 2 - (self.size[0] * 50 // 2) + x + 15, self.H // 2 - (self.size[1] * 50 // 2) + y + 5 )
 
+                        # if self.timer_started and self.first_click:
+                        #     if self.tile_is_bomb or bomb_count != 0 :
+                        #         self.bomb_count = self.board.is_bomb()
+                        #         print ("bmb")
+                        #     else:
+                        #         self.first_click = False
+
     # Check if tile is a bomb
     def check_bomb(self, row, col):
         if self.board.is_bomb_at(row, col):
@@ -262,8 +273,10 @@ class Game(Element):
                         for tile_rect, (row, col) in self.board_list:
                             if tile_rect.collidepoint(event.pos):
                                 if not self.timer_started:
-                                    self.timer_started = True
                                     self.start_time = time.time()
+                                    self.timer_started = True
+                                    self.board.is_bomb(row, col, self.bomb_count)
+                                    
                                 if ((row, col) not in [item[0] for item in self.discovered_tile] and self.tile_states.get((row, col), EMPTY) != FLAG and self.tile_states.get((row, col), EMPTY) != QUESTION_MARK):
                                     self.check_bomb(row, col)
                                 break
