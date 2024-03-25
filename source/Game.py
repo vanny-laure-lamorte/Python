@@ -144,12 +144,14 @@ class Game(Element):
         if self.tile_is_bomb == True:
             self.game_lose()
             self.game_finished = True
-        if self.remaining_tiles == 0:
+            self.timer_started = False
+        if self.remaining_tiles == 0 and self.timer_started:
             self.game_win()
             if not self.add_info_json:
                 self.save_player_name()
                 self.add_info_json = True
                 self.game_finished = True
+                self.timer_started = False
 
     # Display win message
     def game_win(self):
