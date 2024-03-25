@@ -32,7 +32,6 @@ class Game(Element):
         self.player_name = None
         self.player_name_default = "NOT FOUND"
         self.best_time_default = "NOT FOUND"
-        self.first_click = True
 
         # Timer
         self.timer_started = False
@@ -155,14 +154,12 @@ class Game(Element):
         if self.tile_is_bomb == True:
             self.game_lose()
             self.game_finished = True
-            self.timer_started = False
         if self.remaining_tiles == 0 and self.timer_started:
             self.game_win()
             if not self.add_info_json:
                 self.save_player_name()
                 self.add_info_json = True
                 self.game_finished = True
-                self.timer_started = False
 
     # Display win message
     def game_win(self):
@@ -221,13 +218,6 @@ class Game(Element):
                         if bomb_count > 0:
                             self.text_not_align(self.font5, 20, str(bomb_count), self.black, self.W // 2 - (self.size[0] * 50 // 2) + x + 15, self.H // 2 - (self.size[1] * 50 // 2) + y + 5 )
 
-                        # if self.timer_started and self.first_click:
-                        #     if self.tile_is_bomb or bomb_count != 0 :
-                        #         self.bomb_count = self.board.is_bomb()
-                        #         print ("bmb")
-                        #     else:
-                        #         self.first_click = False
-
     # Check if tile is a bomb
     def check_bomb(self, row, col):
         if self.board.is_bomb_at(row, col):
@@ -277,6 +267,7 @@ class Game(Element):
                                     self.start_time = time.time()
                                     self.timer_started = True
                                     self.board.is_bomb(row, col, self.bomb_count)
+                                    self.first_click = False
                                     
                                 if ((row, col) not in [item[0] for item in self.discovered_tile] and self.tile_states.get((row, col), EMPTY) != FLAG and self.tile_states.get((row, col), EMPTY) != QUESTION_MARK):
                                     self.check_bomb(row, col)
