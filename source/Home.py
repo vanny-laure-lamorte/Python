@@ -22,14 +22,14 @@ class Home (Element):
         # Loading images
         self.background_image = pygame.image.load("assets/image/home1.png")
         self.home_image = pygame.image.load("assets/image/home2.png")
-       
+
         self.image_premium = pygame.image.load("assets/image/home_premium.png")
 
         self.image_lock = pygame.image.load("assets/image/icon-jerry.png")
-        self.image_lock = pygame.transform.scale(self.image_lock, (50, 50)) 
+        self.image_lock = pygame.transform.scale(self.image_lock, (50, 50))
 
         self.image_lock1 = pygame.image.load("assets/image/icon-jerry1.png")
-        self.image_lock1 = pygame.transform.scale(self.image_lock1, (50, 50)) 
+        self.image_lock1 = pygame.transform.scale(self.image_lock1, (50, 50))
 
         # Player info
         self.player_info_list = []
@@ -51,8 +51,7 @@ class Home (Element):
 
         self.clock = pygame.time.Clock()
 
-    # def jump(self): 
-        
+    # def jump(self):
 
     def premium(self):
 
@@ -60,7 +59,7 @@ class Home (Element):
         if current_time - self.jump_timer  > self.jump_cooldown:
             self.jumping = True
             self.jump_timer  = current_time
-        
+
         if self.jumping:
             if self.jump_count >= -4:
                 self.jerry_y -= (self.jump_count * abs(self.jump_count)) * 0.5
@@ -94,14 +93,14 @@ class Home (Element):
 
         if self.error_message:
             self.text_not_align(self.font4, 12,"INVALID USERNAME", self.red, 495, 403)
-        elif self.error_length: 
+        elif self.error_length:
             self.text_not_align(self.font4, 12, "YOU CAN ONLY USE 14 CHARACTERS", self.red, 410, 403)
 
         if self.error_message_row:
-            self.text_not_align(self.font4, 12,"INVALID ENTRY", self.white, 360, 690)
+            self.text_not_align(self.font4, 12,"INVALID ENTRY", self.white, 610, 580)
 
         if self.error_message_col:
-            self.text_not_align(self.font4, 12,"INVALID ENTRY", self.white, 560, 690)
+            self.text_not_align(self.font4, 12,"INVALID ENTRY", self.white, 610, 550)
 
         self.btn_normal = self.button_hover(self.W//2, 450, 180, 50, self.red1, self.white, self.red2, self.white, "Normal", self.font2, self.white, 35, 2, 5)
         self.btn_expert = self.button_hover(self.W//2, 510, 180, 50, self.red1, self.white, self.red2, self.white, "Expert", self.font2, self.white, 35, 2, 5)
@@ -110,11 +109,11 @@ class Home (Element):
         self.input_rows_rect = self.button_hover(550, 585, 90, 25, self.red1, self.white, self.red2, self.white, self.input_rows, self.font3, self.white, 10, 2, 5)
 
 
-        if self.error_grid: 
+        if self.error_grid:
             self.text_not_align(self.font4, 12,"Min columns and row: 4", self.red, 360, 600)
-       
-        if self.error_premium: 
-            if int(self.input_rows) < 13 and int(self.input_cols) < 13: 
+
+        if self.error_premium:
+            if int(self.input_rows) < 13 and int(self.input_cols) < 13:
                 self.error_premium = False
             self.premium()
 
@@ -135,7 +134,7 @@ class Home (Element):
                             self.input_rows = ""
                         self.error_message_row = False
                         self.entry = True
-                       
+
                     elif self.input_cols_rect.collidepoint(event.pos):
                         if self.input_cols == "Enter columns":
                             self.input_cols = ""
@@ -184,26 +183,27 @@ class Home (Element):
                         else:
                             self.error_message = False
 
-                            if int(self.input_cols) < 4 or int(self.input_rows) < 4: 
+                        if not self.error_message_row and not self.error_message_col and not self.error_message:
+                            if int(self.input_cols) < 4 or int(self.input_rows) < 4:
                                 self.error_grid = True
 
-                            elif int(self.input_cols) > 13 or int(self.input_rows) > 13: 
+                            elif int(self.input_cols) > 13 or int(self.input_rows) > 13:
                                 self.error_premium = True
                             else:
                                 g = Game((int(self.input_rows), int(self.input_cols)), self.input_name)
                                 g.game_run()
                                 self.input_name, self.input_cols, self.input_rows = "ENTER YOUR NAME", "Enter columns", "Enter rows"
-                                
+
                     else:
                         self.entry = False
 
                 elif event.type == pygame.KEYDOWN:
                     if self.entry:
-                        
+
                         if event.key == pygame.K_BACKSPACE and self.input_name_rect.collidepoint(pygame.mouse.get_pos()):
                             self.input_name = self.input_name[:-1]
                             self.error_length = False
-                      
+
                         elif event.key == pygame.K_BACKSPACE and self.input_rows_rect.collidepoint(pygame.mouse.get_pos()):
                             self.input_rows = self.input_rows[:-1]
 
