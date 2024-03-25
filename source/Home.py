@@ -73,7 +73,7 @@ class Home (Element):
 
         self.img_center("premium", self.W//2, 670, 180, 180,self.image_premium )
         self.text_center(self.font2, 20," Unlock all levels", self.white, self.W//2, 658)
-        self.text_center(self.font2, 25,"PREMIUM", self.blue, self.W//2, 685)
+        self.text_center(self.font2, 25,"PREMIUM 9.99 $", self.blue, self.W//2, 685)
 
     def design(self):
 
