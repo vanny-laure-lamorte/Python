@@ -154,7 +154,7 @@ class Game(Element):
         if self.tile_is_bomb == True:
             self.game_lose()
             self.game_finished = True
-        if self.remaining_tiles == 0 and self.timer_started:
+        if self.remaining_tiles == 0 and self.timer_started and not self.tile_is_bomb:
             self.game_win()
             if not self.add_info_json:
                 self.save_player_name()

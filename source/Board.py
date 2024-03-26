@@ -33,7 +33,6 @@ class Board:
             bomb_neighbour = self.check_neighbour(row_clicked, col_clicked)
 
             if self.is_bomb_at(row_clicked,col_clicked) or bomb_neighbour != 0:
-                print("hello")
                 self.board = []
                 self.is_bomb(row_clicked, col_clicked, bomb_count)
 
