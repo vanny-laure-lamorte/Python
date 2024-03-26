@@ -147,13 +147,21 @@ class Game(Element):
         self.draw_rectangles(900, 260, 80, 90, self.img_tom, self.bomb_count_final, "Bombs")  # Tom
         self.draw_rectangles(900, 360, 80, 90, self.img_game_flag, self.flag_count, "Red flag")  # Red flag
 
-        self.remaining_tiles = self.tile_count - len(self.discovered_tile)
+        if self.tile_is_bomb == True:
+            self.remaining_tiles = (self.tile_count - len(self.discovered_tile)) + self.bomb_count
+        else:
+            self.remaining_tiles = self.tile_count - len(self.discovered_tile)
+
         self.tile_count = int(self.size[0]*self.size[1]) - int(self.bomb_count)
         self.draw_rectangles(900, 460, 80, 90, self.img_tile_not_revealed, self.remaining_tiles, "Safe tiles")  # Red tiles
 
         if self.tile_is_bomb == True:
             self.game_lose()
             self.game_finished = True
+            for row in range(self.size[1]):
+                for col in range(self.size[0]):
+                    self.check_bomb(row, col)
+
         if self.remaining_tiles == 0 and self.timer_started and not self.tile_is_bomb:
             self.game_win()
             if not self.add_info_json:
@@ -225,7 +233,8 @@ class Game(Element):
                 self.discovered_tile.append(((row, col), True))
             self.tile_is_bomb = True
         else:
-            self.check_adjacent_tiles(row, col)
+            if not self.tile_is_bomb:
+                self.check_adjacent_tiles(row, col)
 
     def check_adjacent_tiles(self, row, col):
         adjacent_tiles = [(row - 1, col - 1), (row - 1, col), (row - 1, col + 1),

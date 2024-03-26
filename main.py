@@ -7,5 +7,6 @@
 
 from source.Home import Home
 
-h = Home()
-h.run_home()
+if __name__ == "__main__":
+    h = Home()
+    h.run_home()
